@@ -1,52 +1,49 @@
 <%- include('partials/header', { title: title }) %>
 
 <style>
-  /* HERO */
-  .overview-hero {
+  /* HERO STYLE (giống trang giới thiệu dự án) */
+  .about-hero-img-wrap {
     width: 100%;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 28px;
-    box-shadow: 0 8px 28px rgba(0,0,0,0.10);
+    margin-bottom: 40px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
   }
-  .overview-hero img {
+  .about-hero-img {
     width: 100%;
     height: auto;
+    max-height: 360px;      /* 🟢 GIỚI HẠN CHIỀU CAO */
     display: block;
-    object-fit: contain;
+    object-fit: contain;    /* giữ ảnh nguyên */
+    background: #fff;       /* giúp ảnh contain nhìn sạch */
   }
 
-  /* PAGE */
-  .page-title {
-    font-weight: 900;
-    font-size: 28px;
-    margin-bottom: 8px;
-    letter-spacing: .4px;
-  }
-  .page-sub {
-    color: #555;
-    margin-bottom: 18px;
-    font-size: 15px;
+  /* PAGE SECTION */
+  .about-section {
+    margin-bottom: 40px;
   }
 
-  .article-content {
-    background: #fff;
-    padding: 22px;
-    border-radius: 10px;
-    box-shadow: 0 4px 18px rgba(0,0,0,0.04);
-    line-height: 1.75;
-    color: #222;
-  }
+  /* 🟢 KHÔI PHỤC GẠCH XANH BÊN TRÁI */
 
-  .article-content h3, .article-content h4 {
-    font-weight: 800;
-    margin-top: 22px;
-    margin-bottom: 8px;
-  }
-
-  .article-content p {
-    font-size: 16.5px;
+  .about-section h3{
+    font-weight: 700;
+    margin-top: 30px;
     margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 4px solid #0b79a3 !important;   /* gạch xanh */
+  }
+  .about-section h2{
+    font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 12px;
+    padding-left: 12px;
+    text-align: center;
+  }  
+  .article-content p {
+    font-size: 17px;
+    line-height: 1.65;
+    margin-bottom: 14px;
+    color: #333;
   }
 
   .lead {
@@ -61,102 +58,113 @@
     color: #d32f2f;
   }
 
-  /* lists */
-  .article-content ul {
+  /* list style */
+  .about-section ul {
     padding-left: 20px;
     margin-bottom: 14px;
   }
-  .article-content li {
-    margin-bottom: 8px;
+  .about-section li {
+    margin-bottom: 7px;
   }
 
-  /* responsive tweaks */
   @media (max-width: 767px) {
-    .page-title { font-size: 22px; }
-    .overview-hero { margin-bottom: 18px; border-radius:8px; }
-    .article-content { padding:16px; }
+    .about-hero-img-wrap { margin-bottom: 24px; }
+    .about-hero-img { max-height: 240px; } /* mobile gọn hơn */
   }
 </style>
 
+
 <div class="container">
+
   <!-- HERO IMAGE -->
-  <div class="overview-hero" aria-hidden="true">
-    <img src="/mnt/data/dc747a59-db24-49e5-b763-e2bddfb5bcf9.png" alt="Tổng quan TP Hồ Chí Minh - hero">
+  <div class="about-hero-img-wrap">
+    <img src="/public/defaults/tong_quan.png" alt="Tổng quan TP.HCM" class="about-hero-img">
   </div>
 
-  <!-- TITLE -->
-  <h1 class="page-title">HỒ CHÍ MINH – SIÊU ĐÔ THỊ</h1>
-  <div class="page-sub">PHÍA NAM VIỆT NAM TRONG TƯƠNG LAI — TP. HỒ CHÍ MINH – KHÁT VỌNG LỚN TỪ BA ĐÔ THỊ ĐÔNG NAM BỘ</div>
+  <div class="about-section">
 
-  <!-- ARTICLE -->
-  <div class="article-content" role="article" aria-label="Bài giới thiệu Tổng quan về Thành phố Hồ Chí Minh">
-    <p class="lead">
-      Kính chào Ban tổ chức, Ban giám khảo, thầy cô giáo và các bạn học sinh thân mến! Chúng mình là nhóm học sinh lớp 11, 12 trường THPT Nguyễn Trãi – Bình Dương, TP.HCM.
-      Chúng mình cực kỳ tự hào khi được giới thiệu với mọi người về <span class="highlight">Thành phố Hồ Chí Minh – siêu đô thị trong tương lai</span>, nơi mà thế hệ chúng mình sẽ là chủ nhân và trực tiếp tham gia kiến tạo.
-    </p>
-
-    <p>
-      Bài giới thiệu này là một phần trong ý tưởng Start-up của chúng mình, nhằm cung cấp cho thầy cô, các bạn học sinh và những ai quan tâm đến dự án một góc nhìn khá toàn diện và khoa học về lịch sử đang được viết nên của TP.HCM.
-    </p>
-
+    <h2>HỒ CHÍ MINH – SIÊU ĐÔ THỊ PHÍA NAM VIỆT NAM TRONG TƯƠNG LAI</h3>
+    <!-- 1 -->
     <h3>1. Lịch sử hình thành và siêu sức mạnh của ba đô thị hợp nhất</h3>
+
     <p>
-      TP. Hồ Chí Minh mới được thành lập vào ngày <strong>1 tháng 7 năm 2025</strong>. Đây là sự kiện lịch sử trọng đại được cụ thể hóa theo Nghị quyết 60-NQ/TW (12/4/2025) về chủ trương sáp nhập đơn vị hành chính cấp tỉnh và xây dựng mô hình chính quyền địa phương 2 cấp.
-      Thành phố được thành lập trên cơ sở sáp nhập ba đơn vị hành chính cấp tỉnh:
+      TP. Hồ Chí Minh mới được thành lập vào ngày <strong>1 tháng 7 năm 2025</strong>.
+      Đây là sự kiện lịch sử trọng đại được cụ thể hóa theo Nghị quyết 60-NQ/TW (12/4/2025)
+      về việc sáp nhập các đơn vị hành chính cấp tỉnh và xây dựng mô hình chính quyền địa phương 2 cấp.
     </p>
+    <p>Thành phố được hình thành từ sự hợp nhất của ba đơn vị hành chính:</p>
     <ul>
       <li>TP. Hồ Chí Minh (cũ)</li>
       <li>Tỉnh Bình Dương</li>
       <li>Tỉnh Bà Rịa – Vũng Tàu</li>
     </ul>
+
     <p>
-      Mục tiêu cốt lõi là phát huy tiềm năng, lợi thế của cả ba địa phương để tạo ra một cực tăng trưởng mới cho cả nước và vùng Đông Nam Bộ.
+      Mục tiêu là phát huy tiềm năng và lợi thế của cả ba địa phương để tạo nên một cực tăng trưởng mới 
+      của vùng Đông Nam Bộ và của cả nước.
     </p>
 
     <h4>Siêu sức mạnh của ba đô thị hợp nhất</h4>
-    <p>
-      Việc hợp nhất tạo ra lợi thế tổng hợp vượt trội, cả về diện tích, dân cư và chức năng kinh tế — văn hoá — logistics:
-    </p>
     <ul>
       <li><strong>Vũng Tàu:</strong> cửa ngõ biển, logistics quốc tế, du lịch biển.</li>
-      <li><strong>Bình Dương:</strong> trung tâm công nghiệp, công nghệ cao, chuỗi cung ứng hiện đại.</li>
+      <li><strong>Bình Dương:</strong> trung tâm công nghiệp – công nghệ cao – chuỗi cung ứng.</li>
       <li><strong>TP.HCM (cũ):</strong> trung tâm hành chính, tài chính, giáo dục, sáng tạo.</li>
     </ul>
 
-    <h3>2. Tầm nhìn trong tương lai theo chủ trương của Đảng và Nhà nước</h3>
+    <!-- 2 -->
+    <h3>2. Tầm nhìn tương lai theo chủ trương của Đảng và Nhà nước</h3>
+
     <p>
-      Thành lập TP.HCM là hiện thực hoá khát vọng xây dựng một <strong>siêu đô thị quốc tế</strong>. Một số mục tiêu chiến lược:
+      Thành lập TP.HCM mới là bước đi hiện thực hóa khát vọng xây dựng một 
+      <strong>siêu đô thị quốc tế</strong>.
     </p>
+
     <ul>
       <li>Trở thành siêu đô thị quốc tế vào năm 2045.</li>
-      <li>Phấn đấu lọt vào top 100 thành phố đáng sống nhất thế giới vào năm 2030.</li>
-      <li>Trở thành trung tâm kinh tế, tài chính, văn hoá, giáo dục và khoa học công nghệ của Đông Nam Á.</li>
+      <li>Lọt top 100 thành phố đáng sống nhất thế giới vào năm 2030.</li>
+      <li>Trở thành trung tâm kinh tế – tài chính – văn hóa – giáo dục – công nghệ của Đông Nam Á.</li>
     </ul>
 
     <p>
-      <strong>Giao thông hiện đại:</strong> Quy hoạch theo mô hình TOD, mở rộng mạng lưới đường sắt đô thị (kế hoạch ~355 km đến 2035) nhằm giải quyết ùn tắc và nâng cao chất lượng không gian đô thị.
+      <strong>Giao thông hiện đại:</strong> phát triển theo mô hình TOD, với kế hoạch xây dựng
+      khoảng 355 km đường sắt đô thị vào năm 2035, giúp giảm ùn tắc và mở rộng không gian đô thị bền vững.
     </p>
 
+    <!-- 3 -->
     <h3>3. Thành phố của tuổi trẻ, khởi nghiệp và công nghệ</h3>
+
     <p>
-      TP.HCM hướng tới trở thành cực tăng trưởng thu hút nhân tài, đổi mới sáng tạo, phát triển các ngành công nghệ cao, kinh tế số và kinh tế xanh. Đây là môi trường để các ý tưởng khởi nghiệp của các bạn trẻ thực hành và phát triển.
+      TP.HCM hướng đến việc trở thành trung tâm thu hút nhân tài, đổi mới sáng tạo
+      và phát triển các ngành công nghệ cao, kinh tế số, kinh tế xanh.
+      Đây là môi trường lý tưởng để các bạn trẻ hiện thực hóa ý tưởng khởi nghiệp.
     </p>
 
+    <!-- 4 -->
     <h3>4. Văn hóa và con người Nam Bộ: nơi hội tụ trái tim và tri thức</h3>
+
     <p>
-      TP.HCM vừa là nơi lưu giữ văn hóa truyền thống Nam Bộ vừa là điểm giao thoa đa văn hoá. Người Nam Bộ nổi bật với tính nghĩa tình, hào sảng, sáng tạo — đây là nền tảng xã hội để xây dựng một đô thị văn minh, giàu truyền thống nhân văn.
-    </p>
-    <p>
-      Thành phố có nhiều lễ hội, di tích và các làng nghề giữ truyền thống; đồng thời đang phát triển các hình thái nghệ thuật, giải trí và sáng tạo hiện đại.
+      Nét đặc trưng của người Nam Bộ: chất phác, thẳng thắn, phóng khoáng, nghĩa tình.
+      Thành phố là nơi giao thoa văn hóa, vừa giữ gìn truyền thống vừa hội nhập hiện đại.
     </p>
 
+    <p>
+      Thành phố nổi bật với các lễ hội như Lễ hội Chùa Bà Thiên Hậu, Lễ hội Nghinh Ông,
+      cùng nhiều di tích văn hóa – lịch sử như Dinh Độc Lập, Bến Nhà Rồng…
+    </p>
+
+    <p>
+      Bên cạnh đó, các làng nghề truyền thống như Lái Thiêu, hương Lê Minh Xuân, 
+      và các loại hình nghệ thuật như cải lương, đờn ca tài tử vẫn được duy trì và phát triển.
+    </p>
+
+    <!-- END -->
     <h3>Kết luận</h3>
-    <p>
-      TP. Hồ Chí Minh là sự kết hợp giữa tiềm năng kinh tế, công nghệ và giá trị nhân văn sâu sắc. Đây chính là thành phố của tương lai, và thế hệ trẻ – trong đó có chúng em – sẽ trực tiếp tham gia kiến tạo khát vọng đó.
-      Với ý tưởng khởi nghiệp của mình, chúng em mong muốn góp phần xây dựng thành phố ngày càng giàu đẹp, văn minh và sáng tạo.
-    </p>
 
-    <p class="mb-0"><strong>Chúng em xin chân thành cảm ơn!</strong></p>
+    <p>
+      TP. Hồ Chí Minh là sự kết hợp hài hòa giữa tiềm lực kinh tế – công nghệ và giá trị nhân văn sâu sắc. 
+      Đây chính là thành phố của tương lai, và chúng ta – thế hệ trẻ – sẽ là những người biến khát vọng 
+      siêu đô thị quốc tế thành hiện thực.
+    </p>
   </div>
 </div>
 
