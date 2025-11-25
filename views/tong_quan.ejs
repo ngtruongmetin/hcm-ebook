@@ -1,12 +1,13 @@
 <%- include('partials/header', { title: title }) %>
 
 <style>
+  /* HERO */
   .overview-hero {
     width: 100%;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 24px;
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    margin-bottom: 28px;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.10);
   }
   .overview-hero img {
     width: 100%;
@@ -15,77 +16,147 @@
     object-fit: contain;
   }
 
-  .section-title {
-    font-weight: 700;
+  /* PAGE */
+  .page-title {
+    font-weight: 900;
+    font-size: 28px;
+    margin-bottom: 8px;
+    letter-spacing: .4px;
+  }
+  .page-sub {
+    color: #555;
+    margin-bottom: 18px;
+    font-size: 15px;
+  }
+
+  .article-content {
+    background: #fff;
+    padding: 22px;
+    border-radius: 10px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.04);
+    line-height: 1.75;
+    color: #222;
+  }
+
+  .article-content h3, .article-content h4 {
+    font-weight: 800;
     margin-top: 22px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
   }
 
   .article-content p {
-    font-size: 17px;
-    line-height: 1.6;
-    margin-bottom: 14px;
-    color: #333;
+    font-size: 16.5px;
+    margin-bottom: 12px;
   }
 
-  .article-content h4 {
+  .lead {
+    font-size: 18px;
     font-weight: 700;
-    margin-top: 26px;
+    color: #0b79a3;
+    margin-bottom: 14px;
+  }
+
+  .highlight {
+    font-weight: 700;
+    color: #d32f2f;
+  }
+
+  /* lists */
+  .article-content ul {
+    padding-left: 20px;
+    margin-bottom: 14px;
+  }
+  .article-content li {
+    margin-bottom: 8px;
+  }
+
+  /* responsive tweaks */
+  @media (max-width: 767px) {
+    .page-title { font-size: 22px; }
+    .overview-hero { margin-bottom: 18px; border-radius:8px; }
+    .article-content { padding:16px; }
   }
 </style>
 
 <div class="container">
-
   <!-- HERO IMAGE -->
-  <div class="overview-hero">
-    <img src="/mnt/data/dc747a59-db24-49e5-b763-e2bddfb5bcf9.png" alt="">
+  <div class="overview-hero" aria-hidden="true">
+    <img src="/mnt/data/dc747a59-db24-49e5-b763-e2bddfb5bcf9.png" alt="Tổng quan TP Hồ Chí Minh - hero">
   </div>
 
-  <h2 class="section-title">Tổng quan về Thành phố Hồ Chí Minh</h2>
+  <!-- TITLE -->
+  <h1 class="page-title">HỒ CHÍ MINH – SIÊU ĐÔ THỊ</h1>
+  <div class="page-sub">PHÍA NAM VIỆT NAM TRONG TƯƠNG LAI — TP. HỒ CHÍ MINH – KHÁT VỌNG LỚN TỪ BA ĐÔ THỊ ĐÔNG NAM BỘ</div>
 
-  <div class="article-content">
-
-    <p>
-      Thành phố Hồ Chí Minh là trung tâm kinh tế, văn hóa, giáo dục và khoa học – kỹ thuật lớn nhất của cả nước. 
-      Với lịch sử hình thành hơn 300 năm, thành phố đã phát triển không ngừng và trở thành một trong những siêu đô thị năng động bậc nhất Đông Nam Á.
+  <!-- ARTICLE -->
+  <div class="article-content" role="article" aria-label="Bài giới thiệu Tổng quan về Thành phố Hồ Chí Minh">
+    <p class="lead">
+      Kính chào Ban tổ chức, Ban giám khảo, thầy cô giáo và các bạn học sinh thân mến! Chúng mình là nhóm học sinh lớp 11, 12 trường THPT Nguyễn Trãi – Bình Dương, TP.HCM.
+      Chúng mình cực kỳ tự hào khi được giới thiệu với mọi người về <span class="highlight">Thành phố Hồ Chí Minh – siêu đô thị trong tương lai</span>, nơi mà thế hệ chúng mình sẽ là chủ nhân và trực tiếp tham gia kiến tạo.
     </p>
 
     <p>
-      TP.HCM có vai trò đặc biệt quan trọng trong quá trình công nghiệp hóa – hiện đại hóa của Việt Nam, 
-      đồng thời là đầu mối giao thông chiến lược về đường bộ, đường thủy, đường sắt và hàng không.
+      Bài giới thiệu này là một phần trong ý tưởng Start-up của chúng mình, nhằm cung cấp cho thầy cô, các bạn học sinh và những ai quan tâm đến dự án một góc nhìn khá toàn diện và khoa học về lịch sử đang được viết nên của TP.HCM.
     </p>
 
-    <h4>Vị trí địa lý</h4>
+    <h3>1. Lịch sử hình thành và siêu sức mạnh của ba đô thị hợp nhất</h3>
     <p>
-      Tọa lạc ở vùng chuyển tiếp giữa Đông Nam Bộ và Đồng bằng sông Cửu Long, 
-      TP.HCM có vị trí thuận lợi để giao lưu kinh tế – xã hội với các vùng trong nước và quốc tế.
+      TP. Hồ Chí Minh mới được thành lập vào ngày <strong>1 tháng 7 năm 2025</strong>. Đây là sự kiện lịch sử trọng đại được cụ thể hóa theo Nghị quyết 60-NQ/TW (12/4/2025) về chủ trương sáp nhập đơn vị hành chính cấp tỉnh và xây dựng mô hình chính quyền địa phương 2 cấp.
+      Thành phố được thành lập trên cơ sở sáp nhập ba đơn vị hành chính cấp tỉnh:
     </p>
-
-    <h4>Lịch sử hình thành</h4>
+    <ul>
+      <li>TP. Hồ Chí Minh (cũ)</li>
+      <li>Tỉnh Bình Dương</li>
+      <li>Tỉnh Bà Rịa – Vũng Tàu</li>
+    </ul>
     <p>
-      Từ vùng đất Gia Định xưa, thành phố đã trải qua nhiều giai đoạn phát triển quan trọng. 
-      Trải qua các thời kỳ lịch sử, nơi đây luôn giữ vai trò trung tâm kinh tế – thương mại của khu vực phía Nam.
+      Mục tiêu cốt lõi là phát huy tiềm năng, lợi thế của cả ba địa phương để tạo ra một cực tăng trưởng mới cho cả nước và vùng Đông Nam Bộ.
     </p>
 
-    <h4>Những điểm nhấn của một siêu đô thị</h4>
-    <p>• Dân số trên 10 triệu người (nếu tính cả dân vãng lai).<br>
-       • Nền kinh tế dịch vụ – công nghiệp chiếm tỉ trọng lớn trong cả nước.<br>
-       • Hệ thống hạ tầng giao thông đang được đầu tư mạnh (metro, vành đai…).<br>
-       • Đa dạng văn hóa – điểm đến du lịch nổi bật.<br>
-    </p>
-
-    <h4>Tầm nhìn và định hướng phát triển</h4>
+    <h4>Siêu sức mạnh của ba đô thị hợp nhất</h4>
     <p>
-      Thành phố hướng đến mục tiêu trở thành trung tâm tài chính quốc tế, thành phố thông minh, 
-      và đô thị sáng tạo với bốn khu vực trọng điểm: Thủ Đức – trung tâm tri thức và công nghệ; 
-      Khu trung tâm mở rộng – tài chính; Khu Nam – dịch vụ – cảng biển; Khu Tây Bắc – logistic và công nghiệp.
+      Việc hợp nhất tạo ra lợi thế tổng hợp vượt trội, cả về diện tích, dân cư và chức năng kinh tế — văn hoá — logistics:
     </p>
+    <ul>
+      <li><strong>Vũng Tàu:</strong> cửa ngõ biển, logistics quốc tế, du lịch biển.</li>
+      <li><strong>Bình Dương:</strong> trung tâm công nghiệp, công nghệ cao, chuỗi cung ứng hiện đại.</li>
+      <li><strong>TP.HCM (cũ):</strong> trung tâm hành chính, tài chính, giáo dục, sáng tạo.</li>
+    </ul>
+
+    <h3>2. Tầm nhìn trong tương lai theo chủ trương của Đảng và Nhà nước</h3>
+    <p>
+      Thành lập TP.HCM là hiện thực hoá khát vọng xây dựng một <strong>siêu đô thị quốc tế</strong>. Một số mục tiêu chiến lược:
+    </p>
+    <ul>
+      <li>Trở thành siêu đô thị quốc tế vào năm 2045.</li>
+      <li>Phấn đấu lọt vào top 100 thành phố đáng sống nhất thế giới vào năm 2030.</li>
+      <li>Trở thành trung tâm kinh tế, tài chính, văn hoá, giáo dục và khoa học công nghệ của Đông Nam Á.</li>
+    </ul>
 
     <p>
-      Với nền tảng lịch sử, vị trí địa lý thuận lợi và nguồn lực con người dồi dào, 
-      TP.HCM tiếp tục giữ vai trò đầu tàu trong sự phát triển của đất nước.
+      <strong>Giao thông hiện đại:</strong> Quy hoạch theo mô hình TOD, mở rộng mạng lưới đường sắt đô thị (kế hoạch ~355 km đến 2035) nhằm giải quyết ùn tắc và nâng cao chất lượng không gian đô thị.
     </p>
 
+    <h3>3. Thành phố của tuổi trẻ, khởi nghiệp và công nghệ</h3>
+    <p>
+      TP.HCM hướng tới trở thành cực tăng trưởng thu hút nhân tài, đổi mới sáng tạo, phát triển các ngành công nghệ cao, kinh tế số và kinh tế xanh. Đây là môi trường để các ý tưởng khởi nghiệp của các bạn trẻ thực hành và phát triển.
+    </p>
+
+    <h3>4. Văn hóa và con người Nam Bộ: nơi hội tụ trái tim và tri thức</h3>
+    <p>
+      TP.HCM vừa là nơi lưu giữ văn hóa truyền thống Nam Bộ vừa là điểm giao thoa đa văn hoá. Người Nam Bộ nổi bật với tính nghĩa tình, hào sảng, sáng tạo — đây là nền tảng xã hội để xây dựng một đô thị văn minh, giàu truyền thống nhân văn.
+    </p>
+    <p>
+      Thành phố có nhiều lễ hội, di tích và các làng nghề giữ truyền thống; đồng thời đang phát triển các hình thái nghệ thuật, giải trí và sáng tạo hiện đại.
+    </p>
+
+    <h3>Kết luận</h3>
+    <p>
+      TP. Hồ Chí Minh là sự kết hợp giữa tiềm năng kinh tế, công nghệ và giá trị nhân văn sâu sắc. Đây chính là thành phố của tương lai, và thế hệ trẻ – trong đó có chúng em – sẽ trực tiếp tham gia kiến tạo khát vọng đó.
+      Với ý tưởng khởi nghiệp của mình, chúng em mong muốn góp phần xây dựng thành phố ngày càng giàu đẹp, văn minh và sáng tạo.
+    </p>
+
+    <p class="mb-0"><strong>Chúng em xin chân thành cảm ơn!</strong></p>
   </div>
 </div>
 
