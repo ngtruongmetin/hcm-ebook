@@ -1,0 +1,83 @@
+<%- include('partials/header', { title: title }) %>
+
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body">
+      <h4>Sửa bài học</h4>
+
+      <form method="post" action="/admin/edit/<%= lesson.id %>" enctype="multipart/form-data">
+        <div class="form-group">
+          <label>Chủ đề / Quyển</label>
+          <select name="book_id" class="form-control">
+            <option value="">Không</option>
+            <% books.forEach(b=>{ %>
+              <option value="<%= b.id %>" <%= b.id===lesson.book_id ? 'selected' : '' %>><%= b.title %></option>
+            <% }) %>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tiêu đề</label>
+          <input name="title" class="form-control" value="<%= lesson.title %>">
+        </div>
+
+        <div class="form-group">
+          <label>Mục tiêu</label>
+          <textarea id="editorObjectives" name="objectives" class="form-control"><%= lesson.objectives %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Nội dung</label>
+          <textarea id="editor" name="content" class="form-control" rows="8"><%= lesson.content %></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>File đính kèm (nếu muốn thay)</label>
+          <input type="file" name="attachment" class="form-control-file">
+          <% if (lesson.attachment) { %>
+            <p class="mt-2">File hiện tại: <a href="<%= lesson.attachment %>" target="_blank">Tải</a></p>
+          <% } %>
+        </div>
+
+        <button class="btn btn-primary">Lưu</button>
+        <a href="/admin" class="btn btn-secondary">Hủy</a>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- CKEditor 5 CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+
+<script>
+  // objectives: nhẹ (no image)
+  if (document.querySelector('#editorObjectives')) {
+    ClassicEditor
+      .create(document.querySelector('#editorObjectives'), {
+        toolbar: [ 'bold', 'italic', 'underline', 'bulletedList', 'numberedList', 'undo', 'redo' ]
+      })
+      .catch(err => console.error(err));
+  }
+
+  // content: full editor with image upload
+  if (document.querySelector('#editor')) {
+    ClassicEditor
+      .create(document.querySelector('#editor'), {
+        ckfinder: { uploadUrl: '/admin/upload-image' },
+        toolbar: [
+          'heading', '|',
+          'bold', 'italic', 'underline', 'link', 'imageUpload', '|',
+          'bulletedList', 'numberedList', '|',
+          'insertTable', 'blockQuote', '|',
+          'undo', 'redo'
+        ]
+      })
+      .catch(err => console.error(err));
+  }
+</script>
+
+
+
+
+
+<%- include('partials/footer') %>

@@ -1,0 +1,210 @@
+<%- include('partials/header', { title: title }) %>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Admin Dashboard</h3>
+    <div>
+      <span class="mr-3">Đăng nhập: <strong><%= adminUser %></strong></span>
+      <a href="/admin/logout" class="btn btn-outline-secondary btn-sm">Logout</a>
+    </div>
+  </div>
+
+  <% if (message) { %>
+    <div class="alert alert-info"><%= message %></div>
+  <% } %>
+  
+  <div class="row">
+    <!-- LEFT: upload article + quick actions -->
+    <div class="col-md-5">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5>Thêm bài học mới</h5>
+          <form method="post" action="/admin/upload-lesson" enctype="multipart/form-data">
+            <div class="form-group">
+              <label>Chủ đề</label>
+              <select name="book_id" class="form-control">
+                <option value="">-------</option>
+                <% if (books && books.length) { %>
+                  <% books.forEach(b=>{ %>
+                    <option value="<%= b.id %>"><%= b.title %></option>
+                  <% }) %>
+                <% } %>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Tiêu đề</label>
+              <input name="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>Mục tiêu cần đạt</label>
+              <textarea id="editorObjectives" name="objectives" class="form-control" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Nội dung</label>
+              <textarea id="editor" name="content" class="form-control" rows="6"></textarea>
+            </div>
+            <div class="form-group">
+              <label>File đính kèm (pdf/docx/...)</label>
+              <input type="file" name="attachment" class="form-control-file">
+            </div>
+            <button class="btn btn-success">Upload</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5>Các thao tác nhanh</h5>
+          <p><a class="btn btn-sm btn-outline-primary" href="/">Trang chủ</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: books management + recent articles -->
+    <div class="col-md-7">
+
+      <!-- BOOK MANAGEMENT -->
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5>Quản lý Chủ đề</h5>
+          <p class="mb-2"><a class="btn btn-sm btn-success" href="/admin/book/new">Tạo chủ đề mới</a></p>
+
+          <table class="table table-sm">
+            <thead>
+              <tr><th>Tiêu đề</th><th>Lớp</th><th>Khu vực</th><th></th></tr>
+            </thead>
+            <tbody>
+              <% if (books && books.length) { %>
+                <% books.forEach(b=>{ %>
+                  <tr>
+                    <td>
+                      <% if (b.cover) { %>
+                        <img src="<%= b.cover %>" style="height:36px; width:auto; margin-right:8px; vertical-align:middle;">
+                      <% } %>
+                      <strong><%= b.title %></strong><br>
+                      <small class="text-muted"><%= b.description ? (b.description.length>100 ? b.description.substring(0,100)+'...' : b.description) : '' %></small>
+                    </td>
+                    <td><%= b.class_name || '-' %></td>
+                    <td><%= b.region_name || '-' %></td>
+                    <td style="white-space:nowrap">
+                      <a class="btn btn-sm btn-outline-secondary" href="/admin/book/edit/<%= b.id %>">Sửa</a>
+                      <form method="post" action="/admin/book/delete" style="display:inline-block" onsubmit="return confirm('Xóa chủ đề và các bài liên quan?');">
+                        <input type="hidden" name="id" value="<%= b.id %>">
+                        <button class="btn btn-sm btn-danger">Xóa</button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } else { %>
+                <tr><td colspan="4" class="text-muted">Chưa có chủ đề</td></tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RECENT ARTICLES -->
+      <div class="card">
+        <div class="card-body">
+          <h5>Danh sách bài học gần đây</h5>
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Tiêu đề</th>
+                <th>Chủ đề</th>
+                <th>Ngày</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (!articles || articles.length===0) { %>
+                <tr><td colspan="4" class="text-muted">Chưa có bài</td></tr>
+              <% } else { %>
+                <% articles.forEach(a=>{ %>
+                  <tr>
+                    <td><a href="/lesson/<%= a.id %>"><%= a.title %></a></td>
+                    <td><%= a.topic || '-' %></td>
+                    <td><%= new Date(a.created_at).toLocaleString() %></td>
+                    <td style="white-space:nowrap">
+                      <a href="/admin/edit/<%= a.id %>" class="btn btn-sm btn-outline-secondary">Sửa</a>
+                      <form method="post" action="/admin/delete-lesson" style="display:inline-block" onsubmit="return confirm('Xóa bài này?');">
+                        <input type="hidden" name="id" value="<%= a.id %>">
+                        <button class="btn btn-sm btn-danger">Xóa</button>
+                      </form>
+                    </td>
+                  </tr>
+                <% }) %>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- RECENT SPECIAL ARTICLES -->
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="mb-0">Danh sách bài báo gần đây</h5>
+        </div>
+        <table class="table table-sm">
+          <thead><tr><th>Tiêu đề</th><th>Ngày</th><th>Trạng thái</th><th></th></tr></thead>
+          <tbody>
+            <% if (specials && specials.length) { %>
+              <% specials.forEach(s=>{ %>
+                <tr>
+                  <td><a href="/admin/special/edit/<%= s.id %>"><%= s.title %></a></td>
+                  <td><%= new Date(s.created_at).toLocaleString() %></td>
+                  <td><%= s.published ? 'Published':'Draft' %></td>
+                  <td style="white-space:nowrap">
+                    <a class="btn btn-sm btn-outline-secondary" href="/admin/special/edit/<%= s.id %>">Sửa</a>
+                    <form method="post" action="/admin/special/delete" style="display:inline-block" onsubmit="return confirm('Xóa bài báo?');">
+                      <input type="hidden" name="id" value="<%= s.id %>">
+                      <button class="btn btn-sm btn-danger">Xóa</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr><td colspan="4" class="text-muted">Chưa có bài báo</td></tr>
+            <% } %>
+          </tbody>
+        </table>
+
+        <p><a class="btn btn-sm btn-success" href="/admin/special/new">Tạo bài báo mới</a></p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CKEditor 5 CDN -->
+<script src="https://cdn.ckeditor.com/ckeditor5/41.2.1/classic/ckeditor.js"></script>
+
+<script>
+  // objectives: nhẹ (no image)
+  if (document.querySelector('#editorObjectives')) {
+    ClassicEditor
+      .create(document.querySelector('#editorObjectives'), {
+        toolbar: [ 'bold', 'italic', 'underline', 'bulletedList', 'numberedList', 'undo', 'redo' ]
+      })
+      .catch(err => console.error(err));
+  }
+
+  // content: full editor with image upload
+  if (document.querySelector('#editor')) {
+    ClassicEditor
+      .create(document.querySelector('#editor'), {
+        ckfinder: { uploadUrl: '/admin/upload-image' },
+        toolbar: [
+          'heading', '|',
+          'bold', 'italic', 'underline', 'link', 'imageUpload', '|',
+          'bulletedList', 'numberedList', '|',
+          'insertTable', 'blockQuote', '|',
+          'undo', 'redo'
+        ]
+      })
+      .catch(err => console.error(err));
+  }
+</script>
+
+
+<%- include('partials/footer') %>

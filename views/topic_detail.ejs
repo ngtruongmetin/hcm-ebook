@@ -1,0 +1,45 @@
+  <%- include('partials/header', { title: title }) %>
+
+  <style>
+    .topic-hero { margin-bottom:18px; }
+    .article-item { transition:.08s; }
+    .article-item:hover { background:#fafafa; }
+  </style>
+
+  <div class="container mt-4">
+    <div class="topic-hero d-flex align-items-center mb-3">
+      <div style="width:120px; height:90px; flex-shrink:0; margin-right:16px;">
+        <% if (topic && topic.cover) { %>
+          <img src="<%= topic.cover %>" alt="cover" style="width:100%;height:100%;object-fit:cover;border-radius:6px;">
+        <% } else { %>
+          <img src="/public/defaults/book-cover.png" alt="cover" style="width:100%;height:100%;object-fit:cover;border-radius:6px;opacity:0.9;">
+        <% } %>
+      </div>
+
+      <div>
+        <h2 class="mb-1"><%= topic ? topic.title : '' %></h2>
+        <p class="text-muted mb-0"><%= topic && topic.description ? topic.description : '' %></p>
+        <small class="text-muted">Tổng số bài: <%= articles ? articles.length : 0 %></small>
+      </div>
+    </div>
+
+    <h5 class="mb-3">Các bài học</h5>
+
+    <% if (!articles || articles.length === 0) { %>
+      <div class="alert alert-light">Chưa có bài học trong chủ đề này.</div>
+    <% } else { %>
+      <ul class="list-group">
+        <% articles.forEach(function(a) { %>
+          <li class="list-group-item article-item d-flex justify-content-between align-items-center">
+            <div>
+              <a href="/lesson/<%= a.id %>" class="font-weight-semibold"><%= a.title %></a>
+              <div class="text-muted small"><%= a.summary ? (a.summary.length > 150 ? a.summary.substring(0,150) + '...' : a.summary) : '' %></div>
+            </div>
+            <div class="text-muted small"><%= new Date(a.created_at).toLocaleDateString() %></div>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+  </div>
+
+  <%- include('partials/footer') %>

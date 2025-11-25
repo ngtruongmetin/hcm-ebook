@@ -1,0 +1,125 @@
+<%- include('partials/header', { title: title }) %>
+
+<style>
+  .special-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    border-radius: 8px;
+    margin-bottom: 22px;
+  }
+
+  .video-wrap {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    background: #000;
+    margin-bottom: 18px;
+  }
+  .video-wrap video {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .featured-post {
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #eee;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.06);
+  }
+  .featured-post h2 {
+    margin: 0 0 12px 0;
+    font-weight: 800;
+    font-size: 22px;
+    color: #d32f2f;
+    line-height: 1.4;
+  }
+  .featured-post p {
+    font-size: 17px;
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+  .featured-post ul {
+    padding-left: 20px;
+  }
+  .featured-post li {
+    margin-bottom: 6px;
+  }
+  .featured-post .meta {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+  .post-source {
+    text-align: right;
+    font-size: 14px;
+    color: #777;
+    margin-top: 18px;
+    font-style: italic;
+  }
+
+</style>
+
+
+<div class="container">
+
+  <!-- BANNER IMAGE -->
+  <img 
+    src="/public/defaults/ky_uc_thoi_chien.png"
+    alt="Ký ức thời chiến"
+    class="special-hero-img"
+  >
+    <!-- POST CONTENT -->
+  <article class="featured-post">
+    <h2>🎥 HÀNH TRÌNH “TÌM VỀ KÝ ỨC” – GẶP GỠ CÔ TRẦN THỊ MINH LÝ</h2>
+
+    <p>
+      Hôm nay, chúng tôi đã có một hành trình thật đặc biệt tại nhà cô Trần Thị Minh Lý –
+      Cựu chiến binh khu phố Hiệp Thành 4, phường Thủ Dầu Một. 
+      Ở tuổi 16, cô đã tình nguyện tham gia Bộ đội Quân nhân Miền (B2), mang trong mình ý chí kiên cường
+      và tinh thần cống hiến cho Tổ quốc.
+    </p>
+
+    <p>
+      Trong không gian ấm cúng tại nhà cô Lý, những ký ức năm xưa được cô kể lại bằng tất cả sự mộc mạc, chân thành.
+    </p>
+
+    <p><strong>Những nội dung chính của buổi giao lưu:</strong></p>
+    <ul>
+      <li>Những ngày hành quân giữa rừng sâu.</li>
+      <li>Những ca cứu chữa thương binh trong gian khó.</li>
+      <li>Niềm tin, nghị lực của thế hệ trẻ một thời “xẻ dọc Trường Sơn đi cứu nước”.</li>
+    </ul>
+
+    <p>
+      Hành trình không chỉ là chuyến ghi hình, mà còn là buổi giao lưu – phỏng vấn – lắng nghe đầy ý nghĩa,
+      giúp thế hệ hôm nay hiểu hơn về giá trị của hòa bình và lòng biết ơn đối với những người đã hy sinh tuổi trẻ cho đất nước.
+    </p>
+
+    <p>
+      ✨ <em>Xin gửi lời tri ân sâu sắc đến cô Trần Thị Minh Lý và những nhân chứng sống 
+      đã gìn giữ ngọn lửa lịch sử cho các thế hệ mai sau.</em>
+    </p>
+
+    <!-- Nguồn đặt cuối bài, căn phải -->
+    <div class="post-source">Nguồn: Đoàn phường Thủ Dầu Một</div>
+  </article>
+
+  <!-- VIDEO -->
+  <div class="video-wrap">
+    <video controls preload="metadata" >
+      <source src="/public/defaults/ky_uc_thoi_chien.mp4" type="video/mp4">
+      Trình duyệt của bạn không hỗ trợ video. 
+      Tải video: <a href="/public/defaults/ky_uc_thoi_chien.mp4">tại đây</a>.
+    </video>
+  </div>
+
+
+
+</div>
+
+<%- include('partials/footer') %>

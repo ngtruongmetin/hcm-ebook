@@ -1,0 +1,77 @@
+<%- include('partials/header', { title: title }) %>
+
+<div class="container mt-4">
+
+
+  <!-- Accordion: list classes -->
+  <div id="classes" class="class-accordion">
+    <h3>Danh mục học liệu</h3>
+    <div id="accordionClasses">
+      <% if (nav && nav.length) { %>
+        <% nav.forEach(function(cls, idx) { %>
+          <div class="card">
+            <div class="card-header" id="heading<%=idx%>">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed class-title" data-toggle="collapse" data-target="#collapse<%=idx%>" aria-expanded="false">
+                  <%= cls.name %>
+                </button>
+              </h5>
+            </div>
+
+            <div id="collapse<%=idx%>" class="collapse" data-parent="#accordionClasses">
+              <div class="card-body">
+                <div class="row">
+                  <% cls.regions.forEach(function(reg) { %>
+                    <div class="col-md-4 mb-3">
+                      <h6><a href="/class/<%=cls.id%>/region/<%=reg.id%>"><%= reg.name %></a></h6>
+                      <ul class="list-unstyled">
+                        <% if (reg.topics && reg.topics.length) { %>
+                          <% reg.topics.forEach(function(t) { %>
+                            <li><a href="/topic/<%= t.id %>"><%= t.title %></a></li>
+                          <% }) %>
+                        <% } else { %>
+                          <li class="text-muted">Chưa có chủ đề</li>
+                        <% } %>
+                      </ul>
+                    </div>
+                  <% }) %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>Chưa có dữ liệu lớp.</p>
+      <% } %>
+    </div>
+  </div>
+  <!-- Latest special articles -->
+  <div class="container mt-4">
+    <h3>Bài báo nổi bật</h3>
+    <div class="row">
+      <% if (specials && specials.length) { %>
+        <% specials.forEach(s => { %>
+          <div class="col-md-4 mb-3">
+            <div class="card h-100">
+              <% if (s.cover) { %>
+                <img src="<%= s.cover %>" class="card-img-top" alt="<%= s.title %>" style="height:160px;object-fit:cover;">
+              <% } else { %>
+                <img src="/public/defaults/book-cover.png" class="card-img-top" alt="cover" style="height:160px;object-fit:cover;">
+              <% } %>
+              <div class="card-body">
+                <h5 class="card-title"><a href="/special/<%= s.id %>"><%= s.title %></a></h5>
+                <p class="card-text text-muted"><%= s.summary ? (s.summary.length>140 ? s.summary.substring(0,140)+'...' : s.summary) : '' %></p>
+                <a href="/special/<%= s.id %>" class="small">Xem thêm →</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-12"><div class="alert alert-light">Chưa có bài báo</div></div>
+      <% } %>
+    </div>
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,35 @@
+<%- include('partials/header', { title: 'Đăng nhập Admin' }) %>
+
+<div class="container" style="max-width:520px; margin-top:36px;">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div class="text-center mb-3">
+        <!-- logo (optional). If you don't want logo, remove img) -->
+        <h4 class="mt-2">Admin Dashboard</h4>
+        <p class="text-muted">Đăng nhập để quản lý bài học / tài liệu</p>
+      </div>
+
+      <% if (message) { %>
+        <div class="alert alert-danger"><%= message %></div>
+      <% } %>
+
+      <form method="post" action="/admin/login">
+        <div class="form-group">
+          <label>Tên đăng nhập</label>
+          <input name="username" class="form-control" required autofocus>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu</label>
+          <input name="password" type="password" class="form-control" required>
+        </div>
+        <button class="btn btn-primary btn-block">Đăng nhập</button>
+      </form>
+
+      <div class="text-center mt-3">
+        <a href="/" class="small">Quay về trang chính</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

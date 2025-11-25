@@ -1,0 +1,36 @@
+<%- include('partials/header', { title: title }) %>
+
+<style>
+  .book-header { display:flex; gap:16px; align-items:center; margin-bottom:18px; }
+  .book-cover { width:140px; height:100px; object-fit:cover; border-radius:6px; flex-shrink:0; }
+  .lesson-list .list-group-item { display:flex; justify-content:space-between; align-items:center; }
+</style>
+
+<div class="container mt-4">
+  <div class="book-header">
+    <div>
+        <img src="<%= book.cover %>" class="book-cover" alt="cover">
+    </div>
+    <div>
+      <h2 class="mb-1"><%= book.title %></h2>
+      <p class="text-muted mb-0"><%= book.description || '' %></p>
+      <small class="text-muted">Số bài học: <%= lessons ? lessons.length : 0 %></small>
+    </div>
+  </div>
+
+  <h5 class="mb-3">Bài học</h5>
+  <% if (!lessons || lessons.length === 0) { %>
+    <div class="alert alert-light">Chưa có bài học.</div>
+  <% } else { %>
+    <ul class="list-group lesson-list">
+      <% lessons.forEach(l => { %>
+        <li class="list-group-item">
+          <a href="/lesson/<%= l.id %>"><%= l.title %></a>
+          <small class="text-muted"><%= new Date(l.created_at).toLocaleDateString() %></small>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

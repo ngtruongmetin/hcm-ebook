@@ -1,0 +1,68 @@
+<%- include('partials/header', { title: title }) %>
+
+<style>
+  .page-head { margin-bottom:18px; }
+  .topic-card { transition: .12s ease; }
+  .topic-card:hover { transform: translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,0.06); }
+  .topic-desc { color:#6c757d; font-size:0.95rem; }
+</style>
+
+<div class="container mt-4">
+  <div class="page-head">
+    <h2 class="mb-1"><%= cls ? cls.name : '' %> 
+      <small class="text-muted">— <%= reg ? reg.name : '' %></small>
+    </h2>
+    <p class="text-muted">Danh sách chủ đề thuộc khu vực này</p>
+  </div>
+
+  <% if (!topics || topics.length === 0) { %>
+    <div class="alert alert-light">Chưa có chủ đề trong khu vực này.</div>
+  <% } else { %>
+    <div class="row">
+      <% topics.forEach(t => { %>
+        <div class="col-md-6 mb-3">
+          <div class="card topic-card">
+            <div class="row no-gutters align-items-center">
+
+              <!-- COVER -->
+              <div class="col-auto" style="padding:12px;">
+                <% if (t.cover) { %>
+                  <img src="<%= t.cover %>" 
+                       alt="cover" 
+                       style="width:110px;height:80px;object-fit:cover;border-radius:6px;">
+                <% } else { %>
+                  <!-- fallback ảnh demo -->
+                  <img src="/public/defaults/book-cover.png"
+                       alt="cover" 
+                       style="width:110px;height:80px;object-fit:cover;border-radius:6px;opacity:0.9;">
+                <% } %>
+              </div>
+
+              <div class="col">
+                <div class="card-body py-2">
+                  <h5 class="mb-1">
+                    <a href="/topic/<%= t.id %>"><%= t.title %></a>
+                  </h5>
+
+                  <% if (t.description) { %>
+                    <p class="mb-1 topic-desc">
+                      <%= t.description.length > 200 
+                        ? t.description.substring(0,200) + '...' 
+                        : t.description %>
+                    </p>
+                  <% } %>
+
+                  <a href="/topic/<%= t.id %>" class="small">Xem chi tiết →</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+
+</div>
+
+<%- include('partials/footer') %>

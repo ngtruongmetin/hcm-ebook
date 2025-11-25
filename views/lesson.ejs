@@ -1,0 +1,65 @@
+<%- include('partials/header', { title: lesson.title }) %>
+
+<style>
+  .lesson-hero {
+    background: linear-gradient(90deg,#0a7cad,#07648c);
+    color:#fff;
+    padding:25px 0;
+    margin-bottom:20px;
+    border-radius:6px;
+  }
+  .lesson-hero h1 {
+    font-size:28px;
+    font-weight:700;
+    margin:0;
+    text-align: center;
+  }
+  .lesson-section-title {
+    margin-top:25px;
+    margin-bottom:10px;
+    font-weight:700;
+  }
+  .attachment-box {
+    background:#f8f8f8;
+    padding:12px;
+    border-radius:6px;
+    border:1px solid #e0e0e0;
+  }
+</style>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="lesson-hero">
+    <div class="container">
+      <h1><%= lesson.title %></h1>
+    </div>
+  </div>
+
+  <!-- OBJECTIVES -->
+  <% if (lesson.objectives) { %>
+    <h4 class="lesson-section-title">🎯 Mục tiêu</h4>
+    <div class="card p-3 mb-3">
+      <%= lesson.objectives %>
+    </div>
+  <% } %>
+
+  <!-- CONTENT -->
+  <h4 class="lesson-section-title">📘 Nội dung bài học</h4>
+  <div class="card p-4 mb-4">
+    <%- lesson.content || '<p>(Không có nội dung)</p>' %>
+  </div>
+
+  <!-- ATTACHMENT -->
+  <% if (lesson.attachment) { %>
+    <h4 class="lesson-section-title">📎 Tập tin đính kèm</h4>
+    <div class="attachment-box mb-4">
+      <a href="<%= lesson.attachment %>" target="_blank" rel="noopener" class="font-weight-bold">
+        ➜ Tải xuống tài liệu
+      </a>
+    </div>
+  <% } %>
+
+</div>
+
+<%- include('partials/footer') %>

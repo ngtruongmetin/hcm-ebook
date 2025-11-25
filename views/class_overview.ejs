@@ -1,0 +1,44 @@
+<%- include('partials/header', { title: title }) %>
+
+<style>
+  .class-hero { margin-bottom:18px; }
+  .region-card { transition:.12s; }
+  .region-card:hover { transform:translateY(-6px); box-shadow:0 10px 25px rgba(0,0,0,0.06); }
+  .region-cover { width:100%; height:140px; object-fit:cover; border-radius:6px; }
+</style>
+
+<div class="container mt-4">
+  <div class="class-hero mb-3">
+    <h2><%= cls ? cls.name : (classId) %></h2>
+    <p class="text-muted">Chọn khu vực để xem danh sách chủ đề</p>
+  </div>
+
+  <div class="row">
+    <% if (regions && regions.length) { %>
+      <% regions.forEach(function(r){ %>
+        <div class="col-md-4 mb-3">
+          <a href="/class/<%= classId %>/region/<%= r.id %>" class="text-dark" style="text-decoration:none;">
+            <div class="card region-card h-100">
+              <% if (r.cover) { %>
+                <img src="<%= r.cover %>" alt="<%= r.name %>" class="region-cover">
+              <% } else { %>
+                <img src="/public/defaults/book-cover.png" alt="<%= r.name %>" class="region-cover">
+              <% } %>
+              <div class="card-body">
+                <h5 class="card-title mb-1"><%= r.name %></h5>
+                <p class="card-text text-muted small"><%= r.description || 'Tổng quan khu vực' %></p>
+                <span class="small text-primary">Xem chủ đề →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="col-12">
+        <div class="alert alert-light">Chưa có khu vực cho lớp này.</div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

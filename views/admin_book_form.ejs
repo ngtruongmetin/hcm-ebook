@@ -1,0 +1,59 @@
+<%- include('partials/header', { title: title }) %>
+
+<div class="container mt-4" style="max-width:900px;">
+  <a href="/admin" class="btn btn-link">&larr; Quay lại Dashboard</a>
+  <div class="card">
+    <div class="card-body">
+      <h4><%= book ? 'Sửa chủ đề' : 'Tạo chủ đề mới' %></h4>
+
+      <form method="post" action="<%= book ? '/admin/book/edit/' + book.id : '/admin/book/new' %>" enctype="multipart/form-data">
+        <div class="form-group">
+          <label>Tiêu đề (tên chủ đề/quyển)</label>
+          <input name="title" class="form-control" value="<%= book ? book.title : '' %>" required>
+        </div>
+
+        <div class="form-group">
+          <label>Mô tả ngắn</label>
+          <textarea name="description" class="form-control"><%= book ? book.description : '' %></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label>Position (thứ tự)</label>
+            <input type="number" name="position" class="form-control" value="<%= book ? book.position : 0 %>">
+          </div>
+          <div class="form-group col-md-4">
+            <label>Lớp</label>
+            <select name="class_id" class="form-control">
+              <option value="">-- Chọn lớp --</option>
+              <% classes.forEach(c=>{ %>
+                <option value="<%= c.id %>" <%= book && book.class_id===c.id ? 'selected' : '' %>><%= c.name %></option>
+              <% }) %>
+            </select>
+          </div>
+          <div class="form-group col-md-4">
+            <label>Khu vực</label>
+            <select name="region_id" class="form-control">
+              <option value="">-- Chọn khu vực --</option>
+              <% regions.forEach(r=>{ %>
+                <option value="<%= r.id %>" <%= book && book.region_id===r.id ? 'selected' : '' %>><%= r.name %></option>
+              <% }) %>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Ảnh bìa (cover)</label>
+          <input type="file" name="cover" class="form-control-file">
+          <% if (book && book.cover) { %>
+            <div class="mt-2">Ảnh hiện tại: <a href="<%= book.cover %>" target="_blank">Xem</a></div>
+          <% } %>
+        </div>
+
+        <button class="btn btn-primary"><%= book ? 'Lưu thay đổi' : 'Tạo chủ đề' %></button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,555 @@
+<%- include('partials/header', { title: title }) %>
+
+<style>
+  /* ===== HOME HERO IMAGE ===== */
+  .home-hero {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-bottom: 26px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  }
+  .hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .section-heading {
+    font-size:1.25rem;
+    font-weight:700;
+    margin-bottom:14px;
+    color: #222;
+  }
+
+  /* ===== CLASS BUTTON ROW (square red buttons) ===== */
+  /* default (mobile): giữ cuộn ngang như trước */
+  .class-row {
+    display:flex;
+    gap:12px;
+    overflow-x:auto;
+    padding:8px 6px;
+    margin-bottom:18px;
+    align-items:center;
+  }
+
+  /* nút mặc định (mobile & desktop fallback) */
+  .class-btn {
+    flex: 0 0 auto;
+    min-width:110px;        /* mobile: mỗi nút có kích thước tối thiểu */
+    height:64px;
+    background:#c62828;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    border-radius:6px;
+    text-decoration:none !important;
+    box-shadow:0 6px 16px rgba(198,40,40,0.12);
+    transition: transform .12s ease, box-shadow .12s ease;
+    border: 2px solid rgba(0,0,0,0.04);
+  }
+
+  /* hover */
+  .class-btn:hover {
+    transform: translateY(-4px);
+    box-shadow:0 10px 22px rgba(198,40,40,0.18);
+    color: #fff;
+  }
+
+  /* ---------- DESKTOP: force single row, equal widths ---------- */
+  @media (min-width: 992px) {
+    .class-row {
+      flex-wrap: nowrap;          /* nằm trên 1 hàng */
+      justify-content: space-between; /* cách đều giữa các nút */
+      gap:18px;
+    }
+
+    /* mỗi nút chia đều không phụ thuộc số lượng (flex:1) */
+    .class-btn {
+      flex: 1 1 0;      /* chiếm đều không bóp nội dung nếu có thể */
+      min-width: 0;     /* cho phép thu nhỏ khi nhiều nút */
+      max-width: none;
+      height:72px;
+      font-size:1rem;
+    }
+
+    /* tạo khoảng giữa đồng đều — nếu muốn khoảng cố định, thay justify-content */
+    /* nếu bạn muốn giới hạn số tối đa nút trên 1 hàng, cần JS hoặc tính toán server-side */
+  }
+
+
+  /* ===== FEATURED ===== */
+  .featured-wrap { margin-top:6px; }
+  .featured-main {
+    position:relative;
+    width:100%;
+    max-height:420px;
+    height:420px;
+    background:#000;
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  }
+  .featured-main img {
+    width:100%;
+    height:100%;
+    object-fit: contain; 
+    display:block;
+    pointer-events:none;
+    user-select:none;
+    transition: transform .25s ease;
+  }
+
+  /* overlay clickable - remove link decoration on hover */
+  .featured-overlay {
+    position:absolute;
+    left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.0);
+    color:#fff;
+    padding:18px;
+    cursor:pointer;
+    text-decoration:none !important;
+    display:block;
+    opacity:0;
+    visibility:hidden;
+    transform: translateY(8px);
+    transition: all .18s ease;
+    pointer-events: none;
+  }
+
+  .featured-overlay,
+  .featured-overlay * {
+    color: #fff !important;
+    text-decoration: none !important;
+  }
+
+  .featured-main:hover img { transform: scale(1.02); }
+  .featured-main:hover .featured-overlay {
+    background: linear-gradient(180deg, rgba(0,0,0,0.0) 0%, rgba(0,0,0,0.35) 25%, rgba(0,0,0,0.78) 100%);
+    opacity:1;
+    visibility:visible;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* small progress line at bottom */
+  .featured-progress {
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:6px;
+    background: rgba(255,255,255,0.08);
+    z-index:25;
+  }
+  .featured-progress .fill {
+    height:100%;
+    width:0%;
+    background: rgba(255,255,255,0.85);
+    transition: width 0s linear;
+  }
+
+  /* controls (left/right) - hidden by default, show on hover of featured-wrap */
+  .featured-control {
+    display:none;
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:30;
+  }
+  .featured-wrap.show-controls .featured-control { display:flex; }
+
+  .ctrl-btn {
+    background: rgba(0,0,0,0.45);
+    color:#fff;
+    border:0;
+    width:44px;
+    height:44px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.25);
+    font-size:20px;
+    line-height:1;
+  }
+  .ctrl-btn:hover { background: rgba(0,0,0,0.65); transform:translateY(-1px); }
+
+  /* thumbnails row below */
+  .featured-thumbs-row {
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .thumb-scroll {
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding:8px 6px;
+    scroll-behavior:smooth;
+    flex:1;
+  }
+  .thumb-item {
+    min-width:220px;
+    height:84px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    background:#fff;
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 3px 8px rgba(0,0,0,0.06);
+    padding:8px;
+    transition: all .18s ease;
+    cursor:pointer;
+    border: 2px solid transparent;
+    flex: 0 0 auto;
+    text-decoration:none !important;
+  }
+  .thumb-item img { width:92px; height:64px; object-fit:cover; border-radius:4px; flex-shrink:0; }
+  .thumb-item .meta { font-size:0.9rem; color:#333; }
+  .thumb-item .meta .t { font-weight:700; margin-bottom:4px; display:block; }
+  .thumb-item.active {
+    border-color:#c62828;
+    background:#fff9f8;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .thumb-nav-btn {
+    background:#fff;
+    border:1px solid #ddd;
+    width:36px;
+    height:36px;
+    border-radius:6px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(0,0,0,0.06);
+    flex-shrink:0;
+  }
+
+  @media(max-width:991px){
+    .home-hero { height:auto; }
+    .featured-main { max-height:260px; height:260px; }
+    .thumb-item { min-width:160px; height:72px; }
+    .thumb-nav-btn { display:none; }
+    .ctrl-btn { width:36px;height:36px;font-size:18px; }
+    .class-btn { width:110px; height:56px; font-size:14px; }
+  }
+  
+</style>
+
+<div class="container mt-4">
+
+  <!-- HERO IMAGE -->
+  <div class="home-hero">
+    <img src="<%= '/public/defaults/home.png' %>" alt="hero" class="hero-img">
+  </div>
+  <div class="section-heading small-gap">Danh mục học liệu</div>
+
+  <!-- ===== CLASS SHORTCUT ROW: red square buttons (horizontal) ===== -->
+  <% if (nav && nav.length) { %>
+    <div class="class-row" role="navigation" aria-label="Chọn lớp">
+      <% nav.forEach(function(clsItem){ %>
+        <a class="class-btn" href="/class/<%= clsItem.id %>" title="Lớp <%= clsItem.name %>">
+          <%= clsItem.name %>
+        </a>
+      <% }) %>
+    </div>
+  <% } %>
+
+
+
+  <!-- ====== FEATURED (below) ====== -->
+  <div class="section-heading small-gap">Bài báo nổi bật</div>
+
+  <div class="featured-wrap" id="featuredWrap">
+    <div class="featured-main" id="featuredMain" aria-live="polite">
+      <% if (specials && specials.length) { %>
+        <img id="featuredImage" src="<%= specials[0].cover || '/public/defaults/book-cover.png' %>" alt="">
+        <a id="featuredOverlay" class="featured-overlay" href="/special/<%= specials[0].id %>">
+          <h4 id="featuredTitle"><%= specials[0].title %></h4>
+          <p id="featuredDesc"><%= specials[0].summary ? (specials[0].summary.length > 220 ? specials[0].summary.substring(0,220) + '...' : specials[0].summary) : '' %></p>
+        </a>
+
+        <div class="featured-progress" aria-hidden="true">
+          <div class="fill" id="progressFill" style="width:0%"></div>
+        </div>
+
+        <div class="featured-control" style="left:12px;">
+          <button id="btnPrev" class="ctrl-btn" title="Trước">&lt;</button>
+        </div>
+        <div class="featured-control" style="right:12px;">
+          <button id="btnNext" class="ctrl-btn" title="Tiếp">&gt;</button>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- thumbnails row with nav buttons -->
+    <div class="featured-thumbs-row mt-2 align-items-center">
+      <div id="thumbPrev" class="thumb-nav-btn d-none d-md-flex" aria-hidden="true">‹</div>
+      <div class="thumb-scroll" id="thumbScroll" role="tablist">
+        <% if (specials && specials.length) { %>
+          <% specials.forEach(function(s, i) { %>
+            <div class="thumb-item <%= i===0 ? 'active' : '' %>" data-index="<%= i %>" tabindex="0" role="button" aria-controls="featuredImage">
+              <img src="<%= s.cover || '/public/defaults/book-cover.png' %>" alt="">
+              <div class="meta">
+                <span class="t"><%= (s.title && s.title.length > 60) ? (s.title.substring(0,57) + '...') : (s.title || '') %></span>
+                <small class="d-block text-muted"><%= s.created_at ? new Date(s.created_at).toLocaleDateString() : '' %></small>
+              </div>
+            </div>
+          <% }) %>
+        <% } %>
+      </div>
+      <div id="thumbNext" class="thumb-nav-btn d-none d-md-flex" aria-hidden="true">›</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    const specials = <%- JSON.stringify(specials || []) %>;
+    if (!specials || !specials.length) return;
+
+    const featuredWrap = document.getElementById('featuredWrap');
+    const featuredMain = document.getElementById('featuredMain');
+    const featuredImage = document.getElementById('featuredImage');
+    const featuredTitle = document.getElementById('featuredTitle');
+    const featuredDesc = document.getElementById('featuredDesc');
+    const featuredOverlay = document.getElementById('featuredOverlay');
+    const progressFill = document.getElementById('progressFill');
+
+    const thumbs = Array.from(document.querySelectorAll('.thumb-item'));
+    const thumbScroll = document.getElementById('thumbScroll');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+    const thumbPrev = document.getElementById('thumbPrev');
+    const thumbNext = document.getElementById('thumbNext');
+
+    // --- Progress & timing (RAF-based, resume from paused point) ---
+    let current = 0;
+    const DURATION = 5000; // 5s
+    let startTime = null;
+    let raf = null;
+    let accumulated = 0;
+    let pauseCount = 0;
+
+    function showIndex(i, restart=false){
+      if (i < 0) i = specials.length -1;
+      if (i >= specials.length) i = 0;
+      current = i;
+      const s = specials[i];
+      featuredImage.src = s.cover || '/public/defaults/book-cover.png';
+      featuredTitle.textContent = s.title || '';
+      featuredDesc.textContent = s.summary ? (s.summary.length > 220 ? s.summary.substring(0,220) + '...' : s.summary) : '';
+      featuredOverlay.href = '/special/' + s.id;
+      thumbs.forEach(t => t.classList.remove('active'));
+      const activeThumb = document.querySelector('.thumb-item[data-index="'+i+'"]');
+      if (activeThumb) activeThumb.classList.add('active');
+
+      // center active thumb (approx)
+      if (activeThumb && thumbScroll) {
+        const containerRect = thumbScroll.getBoundingClientRect();
+        const itemRect = activeThumb.getBoundingClientRect();
+        const offset = (itemRect.left + itemRect.right)/2 - (containerRect.left + containerRect.right)/2;
+        thumbScroll.scrollBy({ left: offset, behavior: 'smooth' });
+      }
+
+      if (restart) {
+        accumulated = 0;
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        startTime = null;
+        raf = requestAnimationFrame(stepProgress);
+      } else {
+        if (!raf) {
+          startTime = null;
+          raf = requestAnimationFrame(stepProgress);
+        }
+      }
+    }
+
+    function stepProgress(ts){
+      if (!startTime) startTime = ts;
+      const elapsedTotal = accumulated + (ts - startTime);
+      const pct = Math.min(1, elapsedTotal / DURATION);
+      if (progressFill) progressFill.style.width = (pct * 100) + '%';
+
+      if (pct >= 1) {
+        accumulated = 0;
+        startTime = null;
+        showIndex((current + 1) % specials.length, false);
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(stepProgress);
+        return;
+      }
+
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(stepProgress);
+    }
+
+    function startProgress() {
+      if (!raf) {
+        startTime = null;
+        raf = requestAnimationFrame(stepProgress);
+      }
+    }
+
+    function stopProgress() {
+      if (raf) {
+        cancelAnimationFrame(raf);
+        raf = null;
+      }
+      if (startTime) {
+        accumulated += (performance.now() - startTime);
+        startTime = null;
+      }
+    }
+
+    // thumb interactions
+    thumbs.forEach(t => {
+      t.addEventListener('click', (e) => {
+        const idx = parseInt(t.getAttribute('data-index'),10);
+        showIndex(idx, true);
+      });
+      t.addEventListener('mouseenter', (e) => {
+        const idx = parseInt(t.getAttribute('data-index'),10);
+        showIndex(idx, true);
+        pauseAll();
+      });
+      t.addEventListener('mouseleave', () => {
+        resumeAll();
+      });
+      t.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          t.click();
+        }
+      });
+    });
+
+    // featured hover -> show controls & pause
+    featuredWrap.addEventListener('mouseenter', () => {
+      featuredWrap.classList.add('show-controls');
+      pauseAll();
+    });
+    featuredWrap.addEventListener('mouseleave', () => {
+      featuredWrap.classList.remove('show-controls');
+      resumeAll();
+    });
+
+    featuredMain.addEventListener('mouseenter', () => pauseAll());
+    featuredMain.addEventListener('mouseleave', () => resumeAll());
+
+    if (featuredOverlay) {
+      featuredOverlay.addEventListener('mouseenter', () => pauseAll());
+      featuredOverlay.addEventListener('mouseleave', () => resumeAll());
+    }
+
+    function scrollThumbs(delta) {
+      if (!thumbScroll) return;
+      thumbScroll.scrollBy({ left: delta, behavior: 'smooth' });
+    }
+    thumbPrev && thumbPrev.addEventListener('click', () => scrollThumbs(-260));
+    thumbNext && thumbNext.addEventListener('click', () => scrollThumbs(260));
+    btnPrev && btnPrev.addEventListener('click', () => showIndex(current - 1, true));
+    btnNext && btnNext.addEventListener('click', () => showIndex(current + 1, true));
+
+    function pauseAll(){
+      pauseCount++;
+      if (pauseCount === 1) stopProgress();
+    }
+    function resumeAll(){
+      pauseCount = Math.max(0, pauseCount-1);
+      if (pauseCount === 0) startProgress();
+    }
+
+    // init
+    showIndex(0, true);
+    startProgress();
+
+    if (thumbScroll) {
+      thumbScroll.addEventListener('mouseenter', () => {
+        featuredWrap.classList.add('show-controls');
+        pauseAll();
+      });
+      thumbScroll.addEventListener('mouseleave', () => {
+        featuredWrap.classList.remove('show-controls');
+        resumeAll();
+      });
+    }
+
+    window.addEventListener('beforeunload', () => {
+      if (raf) cancelAnimationFrame(raf);
+    });
+  })();
+</script>
+<!-- thay thế phần script toggle cũ bằng đoạn này -->
+<script>
+(function(){
+  const toggler = document.querySelector('.navbar-toggler');
+  const navEl = document.getElementById('mainNav');
+
+  if (!toggler || !navEl) return;
+
+  // jQuery/bootstrap v4: dùng API collapse qua jQuery để đảm bảo animation đúng
+  function doToggle() {
+    // nếu jQuery + bootstrap collapse có sẵn
+    if (window.jQuery && typeof window.jQuery(navEl).collapse === 'function') {
+      window.jQuery(navEl).collapse('toggle');
+    } else {
+      // fallback: chỉ toggle class "show"
+      navEl.classList.toggle('show');
+    }
+  }
+
+  toggler.addEventListener('click', function(e){
+    // ngăn các handler khác (đặc biệt handler mặc định của bootstrap) chạy nữa
+    // => tránh double-toggle
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    doToggle();
+
+    // cập nhật aria-expanded cho accessibility
+    const isShown = navEl.classList.contains('show') || (window.getComputedStyle(navEl).display !== 'none' && navEl.classList.contains('collapsing') === false && navEl.classList.contains('collapse'));
+    // better: check if it currently has class 'show' after toggle
+    this.setAttribute('aria-expanded', navEl.classList.contains('show') ? 'true' : 'false');
+  });
+
+  // khi click 1 nav-link trên mobile, đóng menu (giữ hành vi thân thiện)
+  navEl.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      // chỉ đóng trên view nhỏ (nếu toggler hiển thị)
+      const tStyle = window.getComputedStyle(toggler);
+      if (tStyle && tStyle.display !== 'none') {
+        if (window.jQuery && typeof window.jQuery(navEl).collapse === 'function') {
+          window.jQuery(navEl).collapse('hide');
+        } else {
+          navEl.classList.remove('show');
+        }
+        toggler.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // click ngoài đóng menu nếu đang mở
+  document.addEventListener('click', (ev) => {
+    if (!navEl.classList.contains('show')) return;
+    const within = ev.target.closest && ev.target.closest('#mainNav, .navbar-toggler');
+    if (!within) {
+      if (window.jQuery && typeof window.jQuery(navEl).collapse === 'function') {
+        window.jQuery(navEl).collapse('hide');
+      } else {
+        navEl.classList.remove('show');
+      }
+      toggler.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+})();
+</script>
+
+<%- include('partials/footer') %>
