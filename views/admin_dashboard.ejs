@@ -124,7 +124,7 @@
                   <tr>
                     <td><a href="/lesson/<%= a.id %>"><%= a.title %></a></td>
                     <td><%= a.topic || '-' %></td>
-                    <td><%= new Date(a.created_at).toLocaleString() %></td>
+                    <td><%= new Date(a.created_at).toLocaleString('vi-VN') %></td>
                     <td style="white-space:nowrap">
                       <a href="/admin/edit/<%= a.id %>" class="btn btn-sm btn-outline-secondary">Sửa</a>
                       <form method="post" action="/admin/delete-lesson" style="display:inline-block" onsubmit="return confirm('Xóa bài này?');">
@@ -152,7 +152,7 @@
               <% specials.forEach(s=>{ %>
                 <tr>
                   <td><a href="/admin/special/edit/<%= s.id %>"><%= s.title %></a></td>
-                  <td><%= new Date(s.created_at).toLocaleString() %></td>
+                  <td><%= new Date(s.created_at).toLocaleString('vi-VN') %></td>
                   <td><%= s.published ? 'Published':'Draft' %></td>
                   <td style="white-space:nowrap">
                     <a class="btn btn-sm btn-outline-secondary" href="/admin/special/edit/<%= s.id %>">Sửa</a>
