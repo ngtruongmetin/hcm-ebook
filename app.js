@@ -32,6 +32,19 @@ app.use((req, res, next) => {
   res.locals.adminUser = req.session.adminUser || null;
   next();
 });
+  // ── chèn vào app.js ──
+function formatDate(d) {
+  if (!d) return '';
+  const date = new Date(d);
+  if (isNaN(date)) return String(d); // trả lại nguyên nếu không parse được
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const yyyy = date.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+// expose to EJS templates
+app.locals.formatDate = formatDate;
 
 // ---------------- NAV MIDDLEWARE ---------------- //
 const db = require('./models/db');
