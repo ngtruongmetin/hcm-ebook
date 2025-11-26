@@ -37,9 +37,13 @@ router.get('/class/:classId', async (req, res) => {
 
   const regionsWithTopics = regions.map(r => ({
     id: r.id,
+    code: r.code,
     name: r.name,
+    description: r.description,
+    cover: r.cover,
     topics: topics.filter(t => Number(t.region_id) === Number(r.id))
   }));
+
 
   res.render('class_overview', {
     cls,
