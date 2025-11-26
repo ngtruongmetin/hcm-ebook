@@ -26,7 +26,7 @@
       <% lessons.forEach(l => { %>
         <li class="list-group-item">
           <a href="/lesson/<%= l.id %>"><%= l.title %></a>
-          <small class="text-muted"><%= new Date(l.created_at).toLocaleDateString() %></small>
+          <small class="text-muted"><%= new Date(l.created_at).toLocaleDateString('vi-VN') %></small>
         </li>
       <% }) %>
     </ul>

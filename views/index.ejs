@@ -296,7 +296,7 @@
               <img src="<%= s.cover || '/public/defaults/book-cover.png' %>" alt="">
               <div class="meta">
                 <span class="t"><%= (s.title && s.title.length > 60) ? (s.title.substring(0,57) + '...') : (s.title || '') %></span>
-                <small class="d-block text-muted"><%= s.created_at ? new Date(s.created_at).toLocaleDateString() : '' %></small>
+                <small class="d-block text-muted"><%= s.created_at ? new Date(s.created_at).toLocaleDateString('vi-VN') : '' %></small>
               </div>
             </div>
           <% }) %>

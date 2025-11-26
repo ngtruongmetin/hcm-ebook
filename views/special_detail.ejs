@@ -2,7 +2,7 @@
 
 <div class="container mt-4" style="max-width:900px;">
   <h2><%= article.title %></h2>
-  <div class="text-muted mb-2">Đăng: <%= new Date(article.created_at).toLocaleString() %> — bởi <%= article.created_by %></div>
+  <div class="text-muted mb-2">Đăng: <%= new Date(article.created_at).toLocaleString('vi-VN') %> — bởi <%= article.created_by %></div>
 
   <% if (article.cover) { %>
     <img src="<%= article.cover %>" alt="cover" style="width:100%; max-height:360px; object-fit:cover; border-radius:6px;" class="mb-3">

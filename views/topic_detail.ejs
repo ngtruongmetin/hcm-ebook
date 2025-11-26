@@ -35,7 +35,7 @@
               <a href="/lesson/<%= a.id %>" class="font-weight-semibold"><%= a.title %></a>
               <div class="text-muted small"><%= a.summary ? (a.summary.length > 150 ? a.summary.substring(0,150) + '...' : a.summary) : '' %></div>
             </div>
-            <div class="text-muted small"><%= new Date(a.created_at).toLocaleDateString() %></div>
+            <div class="text-muted small"><%= new Date(a.created_at).toLocaleDateString('vi-VN') %></div>
           </li>
         <% }); %>
       </ul>
