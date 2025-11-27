@@ -1,144 +1,90 @@
 <%- include('partials/header', { title: 'Giới thiệu dự án' }) %>
 
 <style>
-  .about-hero {
+  .presentation-hero {
     background: linear-gradient(90deg,#0a7cad,#07648c);
     color: #fff;
-    padding: 50px 0;
+    padding: 36px 24px;
     text-align: center;
     border-radius: 6px;
-    margin-bottom: 40px;
+    margin-bottom: 28px;
   }
-  .about-section h3 {
-    border-left: 4px solid #0b79a3;
-    padding-left: 10px;
-    margin-top: 30px;
-    margin-bottom: 15px;
-    font-weight: 700;
+  .presentation-content {
+    background: #ffffff;
+    padding: 22px;
+    border-radius: 6px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    color: #222;
+    line-height: 1.7;
   }
-  .team-card {
-    border-radius: 8px;
-    border: 1px solid #eee;
-    padding: 20px;
-    background: #fff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-    transition: .2s;
+  .presentation-content h2 {
+    margin-top: 0;
+    margin-bottom: 6px;
+    font-size: 22px;
   }
-  .team-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  .presentation-content p {
+    margin-bottom: 12px;
+    font-size: 15px;
   }
-  .team-name {
-    font-weight: 700;
-    font-size: 18px;
+  .team-list {
+    margin: 8px 0 18px 0;
+    padding-left: 18px;
   }
-  .team-role {
-    color: #777;
+  .team-list li { margin-bottom: 6px; }
+  .note {
     font-size: 14px;
-  }
-  .about-hero-img-wrap {
-    width: 100%;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 40px;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    color: #555;
+    margin-top: 14px;
   }
 
-  .about-hero-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain; /* giữ nguyên tỉ lệ, không crop */
+  @media (min-width: 768px) {
+    .presentation-hero { padding: 48px 40px; }
+    .presentation-content { padding: 28px; }
   }
-
 </style>
 
 <div class="container">
-
-  <!-- HERO BANNER -->
-  <div class="about-hero-img-wrap">
-    <img src="/public/defaults/gioi_thieu_du_an.png" alt="Giới thiệu dự án" class="about-hero-img">
+  <div class="presentation-hero">
+    <h1>Giới thiệu dự án — Địa Phương Số TP.HCM</h1>
+    <p>Bài thuyết trình video ~3 phút</p>
   </div>
 
+  <div class="presentation-content">
+    <h2>BÀI THUYẾT TRÌNH VIDEO 3 PHÚT</h2>
 
-  <div class="about-section">
-
-    <h3>1. Mục tiêu của dự án</h3>
-    <p>
-      <strong>HCM – EBook</strong> được xây dựng nhằm hỗ trợ học sinh THPT trong việc tiếp cận, tra cứu 
-      và học tập nội dung <strong>Giáo dục Địa phương (GDĐP)</strong> khi Thành phố Hồ Chí Minh sáp nhập với 
-      Bình Dương và Bà Rịa – Vũng Tàu. Sự thay đổi này làm phát sinh nhu cầu cấp thiết về:
-    </p>
-    <ul>
-      <li>Nguồn tài liệu GDĐP thống nhất, dễ tiếp cận, cập nhật thường xuyên.</li>
-      <li>Một hệ thống học liệu trực tuyến thân thiện, hiện đại, dễ sử dụng.</li>
-      <li>Tích hợp bài học, hình ảnh, tư liệu, bài tập và tài liệu mở rộng.</li>
+    <p>Xin chào quý thầy cô và các bạn! Chúng em là đội <strong>Địa Phương Số</strong>, gồm các thành viên:</p>
+    <ul class="team-list">
+      <li>Mai Văn Tiến – phụ trách nội dung</li>
+      <li>Phan Thái Ngọc Hà – phụ trách nội dung</li>
+      <li>Nguyễn Thị Bình – phụ trách nội dung</li>
+      <li>Nguyễn Gia Bảo – thiết kế giao diện website</li>
+      <li>Vũ Văn Cường – kỹ thuật lập trình</li>
     </ul>
 
-    <p>
-      Dự án hướng tới việc trở thành <strong>thư viện số GDĐP</strong> chính thống cho học sinh THPT 
-      trên địa bàn TP.HCM mở rộng, đồng thời tạo công cụ để giáo viên và nhà trường có thể đăng tải, chia sẻ 
-      nội dung một cách khoa học và linh hoạt.
-    </p>
+    <p>Chúng em đến với dự án bằng tinh thần học hỏi và tấm lòng nhiệt huyết vốn là đặc trưng của tuổi trẻ, với mong muốn đưa giáo dục địa phương TP. Hồ Chí Minh đến gần hơn với cộng đồng.</p>
 
-    <h3>2. Tính năng nổi bật</h3>
-    <ul>
-      <li><strong>Kho bài học theo lớp – theo khu vực</strong>: Lớp 10, 11, 12; mỗi lớp có 3 khu vực tương ứng 3 tỉnh/thành được sáp nhập.</li>
-      <li><strong>Hệ thống bài báo – tư liệu</strong>: Dùng để tổng hợp các câu chuyện, ký ức, hình ảnh, bản đồ, tài liệu lịch sử – văn hoá.</li>
-      <li><strong>Quản trị nội dung</strong>: Admin có thể tạo lớp, khu vực, chủ đề, bài học, đính kèm tài liệu PDF/Word.</li>
-      <li><strong>Giao diện hiện đại</strong>: Thiết kế theo phong cách web giáo dục (EDU style), dễ dùng và có hỗ trợ mobile.</li>
-      <li><strong>Chạy tốt trên hosting cPanel</strong> nhờ sử dụng Node.js + EJS + MySQL nhẹ, không tốn tài nguyên.</li>
-    </ul>
+    <p>Dự án của chúng em mang tên <strong>“Xây dựng Ebook về lịch sử địa phương Hồ Chí Minh (mới) với trang Web Địa Phương Số TP.HCM”</strong>. Ý nghĩa xã hội của dự án nằm ở việc tạo ra một nguồn tri thức số hóa, dễ tiếp cận, thân thiện với người dùng và đặc biệt phù hợp với thế hệ học sinh – sinh viên hiện nay. Tri thức không chỉ nằm trong sách giáo khoa; tri thức có được là nhờ trải nghiệm sống động. Và đó chính là điều chúng em hướng đến.</p>
 
-    <h3>3. Đối tượng phục vụ</h3>
-    <ul>
-      <li><strong>Học sinh THPT</strong>: Học và tra cứu nội dung GDĐP theo lớp, theo tỉnh/khu vực.</li>
-      <li><strong>Giáo viên</strong>: Tham khảo giáo án, tài liệu, bài tập, và tải lên nội dung trực tiếp.</li>
-      <li><strong>Nhà trường</strong>: Có thể tích hợp vào website trường để làm kho học liệu cho học sinh.</li>
-    </ul>
+    <p>Về sản phẩm, Ebook giáo dục địa phương được thiết kế dưới dạng các chương mục ngắn, trực quan, kết hợp hình ảnh – âm thanh – tương tác. Trang Web Địa Phương Số đóng vai trò nền tảng trung tâm, nơi người xem có thể đọc Ebook, tra cứu sự kiện, xem bản đồ địa phương, hoặc tham gia các hoạt động học tập.</p>
 
-    <h3>4. Tầm nhìn – sứ mệnh</h3>
-    <p>
-      Dự án đặt mục tiêu xa hơn là tạo ra một hệ sinh thái học liệu mở, giúp kết nối các tỉnh thành,
-      lan toả giá trị văn hoá – lịch sử địa phương đến học sinh. 
-      Không chỉ dừng lại ở tài liệu, <strong>HCM – EBook</strong> mong muốn trở thành 
-      <strong>nền tảng học tập chuẩn hoá</strong> cho các môn tích hợp tương lai.
-    </p>
+    <p><strong>Lợi thế cạnh tranh</strong> của sản phẩm nằm ở ba yếu tố:</p>
+    <ol>
+      <li><strong>Tính mới</strong> – tập trung vào giáo dục địa phương Hồ Chí Minh (mới), nội dung được cập nhật và chọn lọc theo chương trình học.</li>
+      <li><strong>Tính sáng tạo</strong> – cách tiếp cận tri thức sống động thông qua hình minh họa, video ngắn, hoạt động tương tác nhẹ nhàng.</li>
+      <li><strong>Khả năng tiếp cận</strong> – giao diện Web tối giản, phù hợp cho cả học sinh, giáo viên và người quan tâm đến kiến thức giáo dục địa phương.</li>
+    </ol>
 
-    <h3>5. Đội ngũ phát triển dự án</h3>
-    <div class="row">
-      <div class="col-md-4 mb-3">
-        <div class="team-card">
-          <div class="team-name">Đặng Ngọc Trường</div>
-          <div class="team-role">Trưởng nhóm – Backend Developer</div>
-          <p class="mt-2">Phụ trách kiến trúc hệ thống, cơ sở dữ liệu, bảo mật và tối ưu hiệu năng.</p>
-        </div>
-      </div>
+    <p>Về mục tiêu, chúng em hướng đến việc giúp học sinh tiếp cận tri thức mới theo cách dễ hiểu và hứng thú hơn; hỗ trợ giáo viên trong việc dạy học; và kéo tri thức lại gần cộng đồng. Giá trị của dự án nằm ở việc bảo tồn dữ liệu và lan tỏa hiểu biết về văn hóa – truyền thống của TP.HCM. Tầm nhìn của sản phẩm là trở thành thư viện tri thức giáo dục địa phương số hóa hiện đại, nơi bất cứ ai cũng có thể truy cập để học, đọc và khám phá.</p>
 
-      <div class="col-md-4 mb-3">
-        <div class="team-card">
-          <div class="team-name">Tên thành viên 2</div>
-          <div class="team-role">Frontend/UI Designer</div>
-          <p class="mt-2">Thiết kế giao diện, UX/UI và trải nghiệm người dùng.</p>
-        </div>
-      </div>
+    <p><strong>Phân khúc khách hàng chính</strong> gồm: học sinh THCS – THPT tại TP.HCM, giáo viên, người yêu tri thức mới, và phụ huynh muốn đồng hành cùng con trong học tập.</p>
 
-      <div class="col-md-4 mb-3">
-        <div class="team-card">
-          <div class="team-name">Tên thành viên 3</div>
-          <div class="team-role">Content Specialist</div>
-          <p class="mt-2">Thu thập tư liệu, biên soạn nội dung GDĐP theo từng khu vực.</p>
-        </div>
-      </div>
-    </div>
+    <p>Về tính khả thi, dự án hoàn toàn phù hợp với năng lực nhóm: chúng em có kiến thức, kỹ năng thiết kế Web, năng lực biên tập nội dung, và khả năng triển khai sản phẩm số. Công nghệ sử dụng là mã nguồn mở, chi phí thấp, đội ngũ trẻ, năng động – nghĩa là dự án tiết kiệm nhưng hiệu quả.</p>
 
-    <h3>6. Lời cảm ơn</h3>
-    <p>
-      Nhóm dự án xin gửi lời cảm ơn đến các thầy cô, nhà trường, và ban tổ chức cuộc thi khởi nghiệp 
-      đã tạo điều kiện để đội ngũ triển khai, hoàn thiện sản phẩm. 
-      Chúng tôi tin rằng HCM – EBook sẽ tiếp tục được phát triển và áp dụng rộng rãi trong giáo dục.
-    </p>
+    <p class="note"><strong>Thông điệp:</strong> “Giáo dục địa phương không chỉ là kiến thức về quê hương – đó là hành trình để mỗi chúng ta hiểu, yêu và góp phần làm đẹp hơn nơi mình đang sống.”</p>
 
+    <p class="note">Cuối cùng, giá trị của sản phẩm đối với cộng đồng và xã hội là tạo dựng thói quen học tập chủ động, nâng cao nhận thức về tri thức giáo dục địa phương, và góp phần xây dựng môi trường giáo dục hiện đại, văn minh.</p>
+
+    <p class="note" style="margin-top:18px;">Xin cảm ơn thầy cô và các bạn đã lắng nghe!</p>
   </div>
 </div>
 
