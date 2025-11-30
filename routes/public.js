@@ -34,7 +34,6 @@ router.get('/class/:classId', async (req, res) => {
     'SELECT id, title, description, cover, region_id FROM books WHERE class_id=? ORDER BY region_id, position',
     [classId]
   );
-
   const regionsWithTopics = regions.map(r => ({
     id: r.id,
     code: r.code,
