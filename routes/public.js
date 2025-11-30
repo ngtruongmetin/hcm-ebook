@@ -21,6 +21,33 @@ router.get('/', async (req, res) => {
   }
 });
 
+// PRODUCT GROUPS LIST (trang list nhóm sản phẩm)
+router.get('/products', async (req, res) => {
+  try {
+    // lấy tất cả nhóm
+    const [groups] = await db.query('SELECT id, name, slug, description, cover FROM product_groups ORDER BY position');
+    res.render('product_groups', { groups, title: 'Danh mục sản phẩm' });
+  } catch (err) {
+    console.error('Error /products', err);
+    res.status(500).send('Lỗi server');
+  }
+});
+
+// PRODUCT GROUP DETAIL (trong 1 nhóm, hiển thị sản phẩm với giá)
+router.get('/products/group/:id', async (req, res) => {
+  try {
+    const groupId = parseInt(req.params.id);
+    const [[group]] = await db.query('SELECT * FROM product_groups WHERE id = ?', [groupId]);
+    if (!group) return res.status(404).send('Không tìm thấy nhóm sản phẩm');
+
+    const [products] = await db.query('SELECT id, title, cover, price, currency, sku FROM products WHERE group_id = ? ORDER BY position', [groupId]);
+    res.render('product_group_detail', { group, products, title: group.name });
+  } catch (err) {
+    console.error('Error /products/group/:id', err);
+    res.status(500).send('Lỗi server');
+  }
+});
+
 
 // CLASS OVERVIEW
 router.get('/class/:classId', async (req, res) => {

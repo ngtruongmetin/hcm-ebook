@@ -1,0 +1,50 @@
+<%- include('partials/header', { title: title }) %>
+
+<style>
+  .page-head { margin-bottom:18px; }
+  .group-card { transition: .12s ease; }
+  .group-card:hover { transform: translateY(-4px); box-shadow:0 8px 20px rgba(0,0,0,0.06); }
+  .group-desc { color:#6c757d; font-size:0.95rem; }
+</style>
+
+<div class="container mt-4">
+  <div class="page-head">
+    <h2 class="mb-1">Danh mục sản phẩm</h2>
+    <p class="text-muted">Các nhóm sản phẩm</p>
+  </div>
+
+  <% if (!groups || groups.length === 0) { %>
+    <div class="alert alert-light">Chưa có nhóm sản phẩm.</div>
+  <% } else { %>
+    <div class="row">
+      <% groups.forEach(g => { %>
+        <div class="col-md-6 mb-3">
+          <div class="card group-card">
+            <div class="row no-gutters align-items-center">
+              <div class="col-auto" style="padding:12px;">
+                <% if (g.cover) { %>
+                  <img src="<%= g.cover %>" alt="cover" style="width:110px;height:80px;object-fit:cover;border-radius:6px;">
+                <% } else { %>
+                  <img src="/public/defaults/book-cover.png" alt="cover" style="width:110px;height:80px;object-fit:cover;border-radius:6px;opacity:0.9;">
+                <% } %>
+              </div>
+              <div class="col">
+                <div class="card-body py-2">
+                  <h5 class="mb-1">
+                    <a href="/products/group/<%= g.id %>"><%= g.name %></a>
+                  </h5>
+                  <% if (g.description) { %>
+                    <p class="mb-1 group-desc"><%= g.description.length > 200 ? g.description.substring(0,200) + '...' : g.description %></p>
+                  <% } %>
+                  <a href="/products/group/<%= g.id %>" class="small">Xem sản phẩm →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

@@ -16,6 +16,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.locals.contact = cfg.CONTACT || { facebook: '', zalo: '', phone: '' };
 
 // session - required for admin login
 const session = require('express-session');
