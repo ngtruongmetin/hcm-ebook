@@ -1,0 +1,323 @@
+<%- include('partials/header', { title: title || 'Tra cứu Đơn vị hành chính' }) %>
+
+<style>
+  /* --- Hero style: matched to lesson-hero you provided --- */
+  .lesson-hero {
+    background: linear-gradient(90deg,#0a7cad,#07648c);
+    color: #fff;
+    padding: 25px 0;
+    margin-bottom: 20px;
+    border-radius: 6px;
+  }
+  .lesson-hero h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
+    text-align: center;
+  }
+
+  /* --- Keep original page styles (unchanged) --- */
+  /* PAGE SECTION (kept from your original about layout) */
+  .about-hero-img-wrap {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+  }
+  .about-hero-img {
+    width: 100%;
+    height: auto;
+    max-height: 360px;
+    display: block;
+    object-fit: contain;
+    background: #fff;
+  }
+
+  .about-section {
+    margin-bottom: 40px;
+  }
+
+  .about-section h3{
+    font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 4px solid #0b79a3 !important;
+  }
+  .about-section h2{
+    font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 12px;
+    padding-left: 12px;
+    text-align: center;
+  }
+  .article-content p {
+    font-size: 17px;
+    line-height: 1.65;
+    margin-bottom: 14px;
+    color: #333;
+  }
+
+  .lead {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0b79a3;
+    margin-bottom: 14px;
+  }
+
+  .highlight {
+    font-weight: 700;
+    color: #d32f2f;
+  }
+
+  .about-section ul {
+    padding-left: 20px;
+    margin-bottom: 14px;
+  }
+  .about-section li {
+    margin-bottom: 7px;
+  }
+
+  @media (max-width: 767px) {
+    .about-hero-img-wrap { margin-bottom: 24px; }
+    .about-hero-img { max-height: 240px; }
+  }
+
+  /* --- Styles for the embedded search UI (kept minimal) --- */
+  .dvhc-search {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .dvhc-search input[type="text"] {
+    flex: 1 1 320px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #e6eef3;
+    font-size: 16px;
+  }
+  .dvhc-search button {
+    background: linear-gradient(90deg,#2563eb,#1e40af);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .dvhc-search button[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .dvhc-examples { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .dvhc-examples button {
+    background: #f1f5f9;
+    border: 1px solid #e6eef3;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #0b3f50;
+  }
+
+  .dvhc-results { margin-top: 12px; }
+  .dvhc-card {
+    background: #f8fafc;
+    border: 1px solid #e6eef3;
+    padding: 14px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+  .dvhc-meta { color: #475569; font-weight: 700; margin-bottom: 6px; }
+  .dvhc-citation {
+    background: #fff;
+    border: 1px dashed #e2e8f0;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 8px;
+    color: #334155;
+    font-size: 13px;
+  }
+</style>
+
+<div class="container">
+
+  <!-- HERO: now uses lesson-hero style exactly -->
+  <div class="lesson-hero" role="img" aria-label="Tra cứu đơn vị hành chính - tiêu đề">
+    <div class="container">
+      <h1>Tra cứu đơn vị hành chính sau sáp nhập</h1>
+    </div>
+  </div>
+
+  <div class="about-section">
+
+    <div class="article-content">
+
+
+      <!-- === SEARCH UI === -->
+      <div class="dvhc-search" role="search" aria-label="Tra cứu đơn vị hành chính">
+        <input id="addressInput" type="text" placeholder="Nhập đơn vị hành chính cũ" aria-label="Nhập đơn vị hành chính cũ">
+        <button id="searchButton" aria-live="polite">
+          <span id="buttonText">Tìm kiếm</span>
+          <span id="loadingSpinner" style="display:none; margin-left:8px;">Đang tìm kiếm</span>
+        </button>
+      </div>
+
+
+      <div id="results" class="dvhc-results" aria-live="polite"></div>
+
+        <p style="margin-top:14px; font-size:13px; color:#475569;">
+        Công cụ này hỗ trợ tra cứu đơn vị hành chính mới được hình thành sau ngày <strong>01/07/2025</strong>.
+        Dữ liệu được tổng hợp từ các văn bản chính thức gồm:
+        <br>• Danh sách các đơn vị hành chính trước thời điểm sắp xếp.
+        <br>• <strong>Nghị quyết 60-NQ/TW</strong> về việc sáp nhập còn 34 tỉnh/thành phố.
+        <br>• <strong>Công văn 915/CTK-CSCL</strong> về mã số đơn vị hành chính cấp tỉnh.
+        <br>• <strong>Công văn 1027/CTK-CSCL</strong> về mã số đơn vị hành chính cấp xã.
+        <br>• Các nghị quyết từ <strong>1654/NQ-UBTVQH15</strong> tới <strong>1687/NQ-UBTVQH15</strong> về việc sắp xếp đơn vị hành chính cấp xã của từng tỉnh.
+        </p>
+
+    </div>
+
+    <p class="article-content">
+    Công cụ được xây dựng nhằm giúp người dân, cơ quan, doanh nghiệp dễ dàng tra cứu tên mới
+    của các phường, xã, thị trấn và tỉnh/thành phố sau khi sắp xếp đơn vị hành chính.
+    Toàn bộ thông tin dựa trên hệ thống mã số và tên gọi được chuẩn hóa trong các nghị quyết và công văn nói trên.
+    </p>
+
+
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<script>
+(function () {
+  const addressInput = document.getElementById("addressInput");
+  const searchButton = document.getElementById("searchButton");
+  const buttonText = document.getElementById("buttonText");
+  const loadingSpinner = document.getElementById("loadingSpinner");
+  const resultsDiv = document.getElementById("results");
+  const exampleButtonsContainer = document.getElementById("exampleButtons");
+
+  function setLoadingState(isLoading) {
+    searchButton.disabled = isLoading;
+    addressInput.disabled = isLoading;
+    if (isLoading) {
+      buttonText.textContent = '';
+      loadingSpinner.style.display = 'inline';
+      searchButton.setAttribute("aria-busy", "true");
+    } else {
+      buttonText.textContent = 'Tìm kiếm';
+      loadingSpinner.style.display = 'none';
+      searchButton.removeAttribute("aria-busy");
+    }
+  }
+
+  function displayMessage(message, type = "info") {
+    const color = type === "error" ? '#ef4444' : '#475569';
+    resultsDiv.innerHTML = `<div class="dvhc-card" style="background:#fff;border-color:${type==='error'?'#fee2e2':'#e6eef3'};"><div style="font-weight:700;color:${color};">${message}</div></div>`;
+  }
+
+  function renderResults(apiResponseData) {
+    resultsDiv.innerHTML = "";
+    if (!apiResponseData || !apiResponseData.result || apiResponseData.result.length === 0) {
+      displayMessage("Không tìm thấy thông tin cho đơn vị hành chính này.");
+      return;
+    }
+
+    apiResponseData.result.forEach((res) => {
+      const card = document.createElement("div");
+      card.className = "dvhc-card";
+
+      let html = '';
+      if (res.ward_code || res.ward_name) {
+        html += `<div class="dvhc-meta">${escapeHtml(res.ward_name || res.name || '—')} — Mã: ${escapeHtml(res.ward_code || 'N/A')}</div>`;
+        html += `<div>Trực thuộc: ${escapeHtml(res.province_name || res.parent_name || 'N/A')}</div>`;
+      } else {
+        html += `<div class="dvhc-meta">${escapeHtml(res.province_name || res.name || '—')} — Mã: ${escapeHtml(res.province_code || res.code || 'N/A')}</div>`;
+      }
+
+      if (res.citation && (res.citation.header || res.citation.line)) {
+        html += `<div class="dvhc-citation"><div style="font-weight:700;">${escapeHtml(res.citation.header || '')}</div><div style="margin-top:6px;">${escapeHtml(res.citation.line || '')}</div></div>`;
+      }
+
+      card.innerHTML = html;
+      resultsDiv.appendChild(card);
+    });
+  }
+
+  function escapeHtml(s) {
+    if (!s && s !== 0) return '';
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  async function fetchParsedData(searchTerm) {
+    const r = await fetch('/api/parse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: searchTerm })
+    });
+    if (!r.ok) {
+      const txt = await r.text().catch(() => '');
+      throw new Error('Parser proxy lỗi: ' + r.status + ' ' + txt);
+    }
+    const parsedData = await r.json();
+    if (!parsedData || parsedData.length === 0) {
+      throw new Error('Không có dữ liệu phân tích');
+    }
+    return parsedData;
+  }
+
+  async function fetchDetailData(parsedData) {
+    const ids = parsedData.map(i => i.id).sort((a,b) => a.length - b.length).join("/");
+    const url = `/public/output/${ids}.json`;
+    const detailResponse = await fetch(url);
+    if (!detailResponse.ok) {
+      const lastId = parsedData[parsedData.length - 1] && parsedData[parsedData.length - 1].id;
+      if (lastId) {
+        const flatUrl = `/public/output/${lastId}.json`;
+        const flatResp = await fetch(flatUrl);
+        if (flatResp.ok) return flatResp.json();
+      }
+      throw new Error("Không tìm thấy file mapping trên server: " + url);
+    }
+    return detailResponse.json();
+  }
+
+  async function handleSearch() {
+    const searchTerm = addressInput.value.trim();
+    if (!searchTerm) return;
+    setLoadingState(true);
+    resultsDiv.innerHTML = "";
+    try {
+      const parsedData = await fetchParsedData(searchTerm);
+      const detailData = await fetchDetailData(parsedData);
+      renderResults(detailData);
+    } catch (err) {
+      console.error(err);
+      displayMessage(err.message || "Lỗi dữ liệu, vui lòng thử lại.", "error");
+    } finally {
+      setLoadingState(false);
+    }
+  }
+
+  searchButton.addEventListener("click", handleSearch);
+  addressInput.addEventListener("keypress", (e) => { if (e.key === "Enter") handleSearch(); });
+
+  exampleButtonsContainer.addEventListener("click", (e) => {
+    if (e.target.classList.contains('example-btn')) {
+      addressInput.value = e.target.textContent.trim();
+      handleSearch();
+    }
+  });
+})();
+</script>

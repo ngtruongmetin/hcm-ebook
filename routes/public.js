@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models/db');
+const axios = require('axios');
 
 // HOME
 router.get('/', async (req, res) => {
@@ -51,6 +52,39 @@ router.get('/class/:classId', async (req, res) => {
     title: `${cls.name}`
   });
 });
+// TRA CỨU ĐƠN VỊ HÀNH CHÍNH
+router.get('/tra-cuu-dvhc', async (req, res) => {
+  try {
+    res.render('dvhc_lookup', { title: 'Tra cứu Đơn vị hành chính' });
+  } catch (err) {
+    console.error('Render tra-cuu-dvhc error', err);
+    res.status(500).send('Lỗi server');
+  }
+});
+// Proxy API /api/parse to external parser
+router.post('/api/parse', async (req, res) => {
+  try {
+    const text = typeof req.body === 'string' ? req.body : (req.body && req.body.text) ? req.body.text : '';
+    if (!text || text.trim().length === 0) return res.status(400).json({ error: 'empty' });
+
+    // forward to external parser as plain text
+    const resp = await axios.post('https://www.dvhcvn.com/demo/parser/api', text, {
+      headers: { 'Content-Type': 'text/plain' },
+      timeout: 20_000
+    });
+
+    // resp.data should be JSON array
+    return res.json(resp.data);
+  } catch (err) {
+    console.error('Proxy /api/parse error', err?.message || err);
+    // nếu axios trả lỗi response, forward status/message ngắn gọn
+    if (err.response) {
+      return res.status(502).json({ error: 'upstream_error', status: err.response.status });
+    }
+    return res.status(500).json({ error: 'proxy_error' });
+  }
+});
+
 // TONG QUAN (Giới thiệu siêu đô thị TP.HCM)
 router.get('/tong-quan', async (req, res) => {
   res.render('tong_quan', { 
