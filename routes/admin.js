@@ -89,11 +89,10 @@ router.get('/logout', (req, res) => {
     return res.redirect('/admin/login');
   });
 });
-
-// ---------- Admin dashboard (upload + list + book management) ----------
+// ---------- Admin Dashboard ----------
 router.get('/', requireLogin, async (req, res) => {
   try {
-    // load books with class/region names
+    // BOOKS
     const [books] = await db.query(`
       SELECT b.id, b.title, b.description, b.position, b.cover,
              c.name AS class_name, r.name AS region_name
@@ -103,21 +102,64 @@ router.get('/', requireLogin, async (req, res) => {
       ORDER BY b.position, b.id
     `);
 
-    // list recent lessons (articles)
+    // SHOW FULL — KHÔNG GIỚI HẠN 50 NỮA
     const [articles] = await db.query(`
       SELECT l.id, l.title, l.created_at, b.title AS topic
       FROM lessons l
       LEFT JOIN books b ON l.book_id = b.id
       ORDER BY l.created_at DESC
-      LIMIT 50
     `);
-    const [specials] = await db.query('SELECT id, title, created_at, published FROM special_articles ORDER BY created_at DESC LIMIT 50');
-    res.render('admin_dashboard', { books, articles, specials, message: null, title: 'Admin Dashboard' });
+
+    // SHOW FULL — KHÔNG GIỚI HẠN 50 NỮA
+    const [specials] = await db.query(`
+      SELECT id, title, created_at, published
+      FROM special_articles
+      ORDER BY created_at DESC
+    `);
+
+    // PRODUCT GROUPS FULL
+    const [productGroups] = await db.query(`
+      SELECT id, name, slug, position, cover
+      FROM product_groups
+      ORDER BY position, id
+    `);
+
+    // PRODUCTS FULL
+    const [productsList] = await db.query(`
+      SELECT p.id, p.title, p.price, p.currency, p.sku, p.position,
+             pg.name AS group_name
+      FROM products p
+      LEFT JOIN product_groups pg ON p.group_id = pg.id
+      ORDER BY p.position, p.id
+    `);
+
+    res.render('admin_dashboard', {
+      books,
+      articles,
+      specials,
+      productGroups,
+      productsList,
+      message: null,
+      adminUser: req.session.adminUser,
+      title: 'Admin Dashboard'
+    });
+
   } catch (err) {
-    console.error(err);
-    res.render('admin_dashboard', { books: [], articles: [], message: 'Lỗi khi tải dữ liệu', title: 'Admin Dashboard' });
+    console.error('Error loading admin dashboard:', err);
+    res.render('admin_dashboard', {
+      books: [],
+      articles: [],
+      specials: [],
+      productGroups: [],
+      productsList: [],
+      message: 'Lỗi khi tải dữ liệu',
+      adminUser: req.session.adminUser,
+      title: 'Admin Dashboard'
+    });
   }
 });
+
+
 
 // ---------- LESSON (article) routes ----------
 
@@ -197,6 +239,167 @@ router.post('/edit/:id', requireLogin, upload.single('attachment'), async (req, 
     res.redirect('/admin');
   }
 });
+// ---------- PRODUCT GROUPS (Admin) ----------
+/* GET form tạo nhóm */
+router.get('/product-group/new', requireLogin, async (req, res) => {
+  res.render('admin_product_group_form', { group: null, message: null, title: 'Tạo nhóm sản phẩm' });
+});
+
+/* POST tạo nhóm */
+router.post('/product-group/new', requireLogin, upload.single('cover'), express.urlencoded({ extended: true }), async (req, res) => {
+  try {
+    const { name, description, position } = req.body;
+    const cover = req.file ? `/public/uploads/${req.file.filename}` : null;
+    const slug = (name || '').toLowerCase().replace(/[^a-z0-9\-_]+/g,'-').replace(/^-|-$/g,'');
+    await db.query('INSERT INTO product_groups (name, slug, description, cover, position) VALUES (?,?,?,?,?)',
+      [name, slug, description || null, cover, position || 0]);
+    res.redirect('/admin');
+  } catch (err) {
+    console.error(err);
+    res.render('admin_product_group_form', { group: null, message: 'Lỗi: ' + err.message, title: 'Tạo nhóm sản phẩm' });
+  }
+});
+
+/* GET edit group */
+router.get('/product-group/edit/:id', requireLogin, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const [[group]] = await db.query('SELECT * FROM product_groups WHERE id=?', [id]);
+    if (!group) return res.redirect('/admin');
+    res.render('admin_product_group_form', { group, message: null, title: 'Sửa nhóm sản phẩm' });
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+/* POST save edit group */
+router.post('/product-group/edit/:id', requireLogin, upload.single('cover'), express.urlencoded({ extended: true }), async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { name, description, position } = req.body;
+    let cover = null;
+    if (req.file) {
+      cover = `/public/uploads/${req.file.filename}`;
+      const [rows] = await db.query('SELECT cover FROM product_groups WHERE id = ?', [id]);
+      if (rows && rows[0] && rows[0].cover) {
+        try { fs.unlinkSync(path.join(__dirname,'..', rows[0].cover)); } catch(e){}
+      }
+    }
+    if (cover) {
+      await db.query('UPDATE product_groups SET name=?, description=?, position=?, cover=? WHERE id=?',
+        [name, description || null, position || 0, cover, id]);
+    } else {
+      await db.query('UPDATE product_groups SET name=?, description=?, position=? WHERE id=?',
+        [name, description || null, position || 0, id]);
+    }
+    res.redirect('/admin');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+/* POST delete group */
+router.post('/product-group/delete', requireLogin, express.urlencoded({ extended: true }), async (req, res) => {
+  try {
+    const id = req.body.id;
+    const [rows] = await db.query('SELECT cover FROM product_groups WHERE id = ?', [id]);
+    if (rows && rows[0] && rows[0].cover) {
+      try { fs.unlinkSync(path.join(__dirname,'..', rows[0].cover)); } catch(e){}
+    }
+    // products will be cascade deleted due to FK
+    await db.query('DELETE FROM product_groups WHERE id = ?', [id]);
+    res.redirect('/admin');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+// ---------- PRODUCTS (Admin) ----------
+/* GET form tạo product */
+router.get('/product/new', requireLogin, async (req, res) => {
+  try {
+    const [groups] = await db.query('SELECT id, name FROM product_groups ORDER BY position');
+    res.render('admin_product_form', { product: null, groups, message: null, title: 'Tạo sản phẩm' });
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+/* POST tạo product */
+router.post('/product/new', requireLogin, upload.single('cover'), express.urlencoded({ extended: true }), async (req, res) => {
+  try {
+    const { group_id, title, price, currency, sku, position } = req.body;
+    const cover = req.file ? `/public/uploads/${req.file.filename}` : null;
+    await db.query('INSERT INTO products (group_id, title, cover, price, currency, sku, position) VALUES (?,?,?,?,?,?,?)',
+      [group_id || null, title, cover, price || 0, currency || 'VND', sku || null, position || 0]);
+    res.redirect('/admin');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+/* GET edit product */
+router.get('/product/edit/:id', requireLogin, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const [[product]] = await db.query('SELECT * FROM products WHERE id = ?', [id]);
+    if (!product) return res.redirect('/admin');
+    const [groups] = await db.query('SELECT id, name FROM product_groups ORDER BY position');
+    res.render('admin_product_form', { product, groups, message: null, title: 'Sửa sản phẩm' });
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+/* POST save edit product */
+router.post('/product/edit/:id', requireLogin, upload.single('cover'), express.urlencoded({ extended: true }), async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { group_id, title, price, currency, sku, position } = req.body;
+    let cover = null;
+    if (req.file) {
+      cover = `/public/uploads/${req.file.filename}`;
+      const [rows] = await db.query('SELECT cover FROM products WHERE id = ?', [id]);
+      if (rows && rows[0] && rows[0].cover) {
+        try { fs.unlinkSync(path.join(__dirname,'..', rows[0].cover)); } catch(e){}
+      }
+    }
+    if (cover) {
+      await db.query('UPDATE products SET group_id=?, title=?, cover=?, price=?, currency=?, sku=?, position=? WHERE id=?',
+        [group_id || null, title, cover, price || 0, currency || 'VND', sku || null, position || 0, id]);
+    } else {
+      await db.query('UPDATE products SET group_id=?, title=?, price=?, currency=?, sku=?, position=? WHERE id=?',
+        [group_id || null, title, price || 0, currency || 'VND', sku || null, position || 0, id]);
+    }
+    res.redirect('/admin');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
+/* POST delete product */
+router.post('/product/delete', requireLogin, express.urlencoded({ extended: true }), async (req, res) => {
+  try {
+    const id = req.body.id;
+    const [rows] = await db.query('SELECT cover FROM products WHERE id = ?', [id]);
+    if (rows && rows[0] && rows[0].cover) {
+      try { fs.unlinkSync(path.join(__dirname,'..', rows[0].cover)); } catch(e){}
+    }
+    await db.query('DELETE FROM products WHERE id = ?', [id]);
+    res.redirect('/admin');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/admin');
+  }
+});
+
 // ---------- SPECIAL ARTICLE routes ----------
 // new special form
 router.get('/special/new', requireLogin, async (req, res) => {
