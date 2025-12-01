@@ -25,6 +25,57 @@
     border-radius:6px;
     border:1px solid #e0e0e0;
   }
+
+  /* ===== responsive content wrapper ===== */
+  .lesson-content { 
+    width: 100%;
+    box-sizing: border-box;
+    word-break: break-word; /* tránh text dài tràn */
+  }
+
+  /* images: scale down on small screens */
+  .lesson-content img,
+  .lesson-content picture,
+  .lesson-content svg {
+    max-width: 100% !important;   /* bắt buộc không tràn khung */
+    height: auto !important;
+    display: block;
+    margin: 0.6rem auto;
+    border-radius: 6px;
+    object-fit: contain;
+  }
+
+  /* iframes / videos (YouTube, embedded) */
+  .lesson-content iframe,
+  .lesson-content video,
+  .lesson-content embed,
+  .lesson-content object {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* tables: allow horizontal scroll on small screens */
+  .lesson-content table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .lesson-content .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* prevent large inline styles from breaking layout (extra safety) */
+  .lesson-content [style*="width:"] {
+    max-width: 100% !important;
+    width: auto !important;
+  }
+
+  /* small-screen tweaks */
+  @media (max-width: 576px) {
+    .lesson-hero h1 { font-size: 18px; }
+    .card.p-4 { padding: 12px; }
+  }
 </style>
 
 <div class="container">
@@ -47,7 +98,9 @@
   <!-- CONTENT -->
   <h4 class="lesson-section-title">📘 Nội dung bài học</h4>
   <div class="card p-4 mb-4">
-    <%- lesson.content || '<p>(Không có nội dung)</p>' %>
+    <div class="lesson-content">
+      <%- lesson.content || '<p>(Không có nội dung)</p>' %>
+    </div>
   </div>
 
   <!-- ATTACHMENT -->
@@ -61,5 +114,58 @@
   <% } %>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const wrapper = document.querySelector('.lesson-content');
+  if (!wrapper) return;
+
+  // xử lý ảnh: loại bỏ width/height inline và đảm bảo responsive
+  wrapper.querySelectorAll('img').forEach(img => {
+    try {
+      img.removeAttribute('width');
+      img.removeAttribute('height');
+      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+      img.classList.add('responsive-img');
+    } catch(e) { /* silently fail */ }
+  });
+
+  // xử lý iframe / embed / video
+  wrapper.querySelectorAll('iframe, embed, object, video').forEach(el => {
+    try {
+      el.removeAttribute('width');
+      el.removeAttribute('height');
+      el.style.width = '100%';
+      el.style.height = 'auto';
+      // nếu cần, có thể bọc bằng container để giữ ratio (tùy chỉnh thêm)
+    } catch(e) { /* silently fail */ }
+  });
+
+  // bọc table nếu cần để cuộn ngang trên màn hình nhỏ
+  wrapper.querySelectorAll('table').forEach(table => {
+    try {
+      if (!table.parentElement || !table.parentElement.classList.contains('table-responsive')) {
+        const wrap = document.createElement('div');
+        wrap.className = 'table-responsive';
+        table.parentNode.insertBefore(wrap, table);
+        wrap.appendChild(table);
+      }
+    } catch(e) { /* silently fail */ }
+  });
+
+  // xử lý các phần tử có inline style chứa width: (biện pháp bổ sung)
+  wrapper.querySelectorAll('[style]').forEach(el => {
+    try {
+      const style = el.getAttribute('style') || '';
+      if (/width\s*:\s*\d+\s*(px|em|rem|%|vw)/i.test(style)) {
+        // thêm max-width override (CSS sẽ ưu tiên !important)
+        el.style.maxWidth = '100%';
+        el.style.width = 'auto';
+      }
+    } catch(e) { /* silently fail */ }
+  });
+});
+</script>
 
 <%- include('partials/footer') %>
